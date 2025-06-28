@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>GPX Tiles Viewer</title>
+  <title>TMT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link
     rel="stylesheet"
@@ -24,10 +24,8 @@
   <script>
 
     const GOOGLE_LAYERS = {
-      roadmap: 'm',
-      satellite: 's',
-      hybrid: 'y', // satellite + labels
-      terrain: 't'
+      satellite: 'y',
+      terrain: 'p'
     };
 
     const map = L.map('map', {
@@ -41,16 +39,16 @@
       'https://mt{s}.google.com/vt?lyrs=' + GOOGLE_LAYERS.satellite + '&x={x}&y={y}&z={z}',
       {
         subdomains: ['0', '1', '2', '3'],
-        attribution: '&copy; Google Satellite'
+        attribution: '&copy; Google Satellite',
       }
-    ).addTo(map);
+    );
 
-    // Google Hybrid overlay (labels only on top of satellite)
-    const googleHybrid = L.tileLayer(
-      'https://mt{s}.google.com/vt?lyrs=' + GOOGLE_LAYERS.hybrid + '&x={x}&y={y}&z={z}',
+    const googleTerrain = L.tileLayer(
+      'https://mt{s}.google.com/vt?lyrs=' + GOOGLE_LAYERS.terrain + '&x={x}&y={y}&z={z}',
       {
         subdomains: ['0', '1', '2', '3'],
-        attribution: '&copy; Google Hybrid'
+        attribution: '&copy; Google Satellite',
+        opacity: 0.8
       }
     ).addTo(map);
 
@@ -58,7 +56,7 @@
     const customTiles = L.tileLayer('./tiles/{z}/{x}/{y}.png', {
     // const customTiles = L.tileLayer('https://raw.githubusercontent.com/cmoffroad/tmt/refs/heads/main/tiles/{z}/{x}/{y}.png', {
       tileSize: 256,
-      opacity: 0.8,
+      opacity: 1,
       minNativeZoom: 10,
       maxNativeZoom: 13,
       attribution: 'GPX Overlay'
@@ -66,11 +64,11 @@
 
     // Layer controls
     const baseLayers = {
-      'Google Satellite': googleSatellite
+      'Google Satellite': googleSatellite,
+      'Google Terrain': googleTerrain,
     };
 
     const overlays = {
-      'Google Labels': googleHybrid,
       'GPX Overlay': customTiles
     };
 
