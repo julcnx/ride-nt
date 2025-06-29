@@ -1,5 +1,5 @@
 // === PASSWORD STORAGE ===
-const PASSWORD = "tmt123";
+const PASSWORD = "rident123";
 const STORAGE_KEY_AUTH = "tmt_auth";
 const STORAGE_KEY_VIEW = "tmt_map_view";
 const STORAGE_KEY_BASE = "tmt_base_layer";
