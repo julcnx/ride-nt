@@ -1,9 +1,9 @@
 // === PASSWORD STORAGE ===
 const PASSWORD = "rident123";
-const STORAGE_KEY_AUTH = "tmt_auth";
-const STORAGE_KEY_VIEW = "tmt_map_view";
-const STORAGE_KEY_BASE = "tmt_base_layer";
-const STORAGE_KEY_OVERLAYS = "tmt_overlays";
+const STORAGE_KEY_AUTH = "rident_auth";
+const STORAGE_KEY_VIEW = "rident_map_view";
+const STORAGE_KEY_BASE = "rident_base_layer";
+const STORAGE_KEY_OVERLAYS = "rident_overlays";
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 function isPasswordValid() {
@@ -103,7 +103,7 @@ const baseLayers = {
 };
 
 const overlays = {
-  'TMT Overlay': customTiles,
+  'Ride NT': customTiles,
   'Google Street View': googleStreetViewTiles
 };
 
@@ -131,10 +131,9 @@ try {
   savedOverlays = savedOverlaysJSON ? JSON.parse(savedOverlaysJSON) : [];
 } catch {}
 
-// If no saved overlays, enable 'TMT Overlay' by default
 if (!savedOverlays.length) {
   customTiles.addTo(map);
-  savedOverlays = ['TMT Overlay'];
+  savedOverlays = ['Ride NT'];
 } else {
   Object.entries(overlays).forEach(([name, layer]) => {
     if (savedOverlays.includes(name)) {
