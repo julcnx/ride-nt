@@ -1,0 +1,27 @@
+html, body, #map {
+  height: 100%;
+  margin: 0;
+}
+#map {
+  display: none;
+}
+#context-menu {
+  position: absolute;
+  display: none;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 6px 0;
+  font-size: 14px;
+  z-index: 1000;
+  border-radius: 4px;
+  min-width: 180px;
+  font-family: sans-serif;
+}
+#context-menu div {
+  padding: 6px 16px;
+  cursor: pointer;
+}
+#context-menu div:hover {
+  background-color: #eee;
+}

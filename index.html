@@ -2,77 +2,15 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>TMT</title>
+  <title>RideNT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-  <style>
-    html, body, #map {
-      height: 100%;
-      margin: 0;
-    }
-  </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="./index.css" />
 </head>
 <body>
   <div id="map"></div>
-
-  <!-- Leaflet core -->
+  <div id="context-menu"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <script>
-
-    const GOOGLE_LAYERS = {
-      satellite: 'y',
-      terrain: 'p'
-    };
-
-    const map = L.map('map', {
-      center: [18.79, 98.98], // Chiang Mai
-      zoom: 10,
-      minZoom: 9,
-    });
-
-    // Google Satellite base layer
-    const googleSatellite = L.tileLayer(
-      'https://mt{s}.google.com/vt?lyrs=' + GOOGLE_LAYERS.satellite + '&x={x}&y={y}&z={z}',
-      {
-        subdomains: ['0', '1', '2', '3'],
-        attribution: '&copy; Google Satellite',
-      }
-    );
-
-    const googleTerrain = L.tileLayer(
-      'https://mt{s}.google.com/vt?lyrs=' + GOOGLE_LAYERS.terrain + '&x={x}&y={y}&z={z}',
-      {
-        subdomains: ['0', '1', '2', '3'],
-        attribution: '&copy; Google Satellite',
-        opacity: 0.8
-      }
-    ).addTo(map);
-
-    // Your custom tile overlay from ./output folder
-    const customTiles = L.tileLayer('./tiles/{z}/{x}/{y}.png', {
-    // const customTiles = L.tileLayer('https://raw.githubusercontent.com/cmoffroad/tmt/refs/heads/main/tiles/{z}/{x}/{y}.png', {
-      tileSize: 256,
-      opacity: 1,
-      minNativeZoom: 10,
-      maxNativeZoom: 13,
-      attribution: 'GPX Overlay'
-    }).addTo(map);
-
-    // Layer controls
-    const baseLayers = {
-      'Google Satellite': googleSatellite,
-      'Google Terrain': googleTerrain,
-    };
-
-    const overlays = {
-      'GPX Overlay': customTiles
-    };
-
-    L.control.layers(baseLayers, overlays).addTo(map);
-  </script>
+  <script src="./index.js"></script>
 </body>
 </html>
