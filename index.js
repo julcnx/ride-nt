@@ -69,7 +69,7 @@ const googleTerrain = L.tileLayer(
   'https://mt{s}.google.com/vt?lyrs=' + GOOGLE_LAYERS.terrain + '&x={x}&y={y}&z={z}', {
     subdomains: ['0', '1', '2', '3'],
     attribution: '&copy; Google Terrain',
-    opacity: 0.7
+    opacity: 0.8
   }
 );
 
@@ -85,7 +85,7 @@ const customTiles = L.tileLayer('./tiles/{z}/{x}/{y}.png', {
   minNativeZoom: 10,
   maxNativeZoom: 13,
   attribution: 'GPX Overlay'
-}).setZIndex(3);
+});
 
 const googleStreetViewTiles = L.tileLayer(
   'https://mts{s}.googleapis.com/vt?hl=en-US&lyrs=svv|cb_client:apiv3&style=40,18&x={x}&y={y}&z={z}', {
@@ -94,7 +94,7 @@ const googleStreetViewTiles = L.tileLayer(
     maxZoom: 20,
     opacity: 0.7
   }
-).setZIndex(2);
+);
 
 const baseLayers = {
   'Google Terrain': googleTerrain,
@@ -103,15 +103,15 @@ const baseLayers = {
 };
 
 const overlays = {
-  'RideNT Overlay': customTiles,
+  'TMT Overlay': customTiles,
   'Google Street View': googleStreetViewTiles
 };
 
 // Add layers control expanded
 L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
 
-// Track current base layer
-let currentBaseLayer = googleTerrain;
+// === Restore base layer and overlays ===
+let currentBaseLayer;
 
 // Restore base layer
 const savedBaseLayerName = localStorage.getItem(STORAGE_KEY_BASE);
@@ -143,6 +143,7 @@ if (!savedOverlays.length) {
   });
 }
 
+// Track current base layer
 map.on('baselayerchange', function (e) {
   currentBaseLayer = e.layer;
   // Save selected base layer name
@@ -226,6 +227,7 @@ function toggleOverlays() {
 document.addEventListener('keydown', (e) => {
   const active = document.activeElement;
   if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) return;
+
   if (e.key.toLowerCase() === 'o') {
     toggleOverlays();
   } else if (e.key === 'Delete') {
@@ -237,3 +239,57 @@ document.addEventListener('keydown', (e) => {
     location.reload();
   }
 });
+
+// === Legend with speed colors ===
+
+const SPEED_COLOR_CONFIG = [
+  { max: 7, color: 'rgba(128, 0, 128, OPACITY)' },     // Magenta (very technical)
+  { max: 15, color: 'rgba(255, 40, 40, OPACITY)' },    // Red (slow dirt)
+  { max: 30, color: 'rgba(255, 179, 0, OPACITY)' },    // Amber (moderate/fast dirt)
+  { max: Infinity, color: 'rgba(0, 140, 60, OPACITY)' } // Dark green (very fast dirt)
+];
+
+const MAYBE_COLOR = 'rgba(160,160,160,1)';
+const PAVED_COLOR = 'rgba(51, 102, 255, 1)'; // Confirmed vibrant blue
+
+const legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function(map) {
+  const div = L.DomUtil.create('div', 'info legend');
+  div.style.background = 'rgba(255, 255, 255, 0.9)';
+  div.style.padding = '8px';
+  div.style.borderRadius = '5px';
+  div.style.fontSize = '14px';
+  div.style.color = '#333';
+  div.style.lineHeight = '1.4';
+  div.style.width = '250px';
+
+  const opacity = 1; // full opacity for legend swatches
+
+  function colorBox(color) {
+    return `<span style="
+      display:inline-block;
+      width:14px;
+      height:10px;
+      margin-right:8px;
+      background-color:${color.replace('OPACITY', opacity)};
+      vertical-align:middle;
+    "></span>`;
+  }
+
+  let html = '<b>RideNT Legend</b><br/><br/>';
+
+  html += `${colorBox(PAVED_COLOR)} Paved<br>`;
+  // html += `<hr style="margin:6px 0">`;
+  html += `${colorBox('rgba(0,140,60,OPACITY)')} Very fast dirt <span class="caption">&gt;30km/h</span> <br>`;
+  html += `${colorBox('rgba(255,179,0,OPACITY)')} Moderate/Fast dirt <span class="caption">15-30 km/h</span><br>`;
+  html += `${colorBox('rgba(255,40,40,OPACITY)')} Slow dirt <span class="caption">7-15 km/h</span><br>`;
+  html += `${colorBox('rgba(128,0,128,OPACITY)')} Very technical <span class="caption">&lt;7 km/h</span><br>`;
+  html += `${colorBox(MAYBE_COLOR)} Potential trail<br>`;
+  html += `<br><span class="caption">Speeds are approximate, calculated from GPX trails in dry conditions, with weather and rider speed factors considered, but accuracy is not guaranteed.</span>`;
+
+  div.innerHTML = html;
+  return div;
+};
+
+legend.addTo(map);

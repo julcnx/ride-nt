@@ -25,3 +25,13 @@ html, body, #map {
 #context-menu div:hover {
   background-color: #eee;
 }
+
+.caption {
+  font-size: 0.8em;
+  color: #666;
+  font-weight: 400;
+  font-style: normal;
+  white-space: normal; /* ensure wrapping */
+  word-wrap: break-word; /* break long words if needed */
+  float: right;
+}
