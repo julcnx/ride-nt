@@ -69,7 +69,7 @@ const googleTerrain = L.tileLayer(
   'https://mt{s}.google.com/vt?lyrs=' + GOOGLE_LAYERS.terrain + '&x={x}&y={y}&z={z}', {
     subdomains: ['0', '1', '2', '3'],
     attribution: '&copy; Google Terrain',
-    opacity: 0.8
+    opacity: 0.7
   }
 );
 
