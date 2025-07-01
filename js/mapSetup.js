@@ -2,6 +2,8 @@ export const STORAGE_KEY_VIEW = "rident_map_view";
 export const STORAGE_KEY_BASE = "rident_base_layer";
 export const STORAGE_KEY_OVERLAYS = "rident_overlays";
 
+import { clipBounds } from './config.js';
+
 export function initializeMap() {
   document.getElementById('map').style.display = 'block';
 
@@ -10,7 +12,13 @@ export function initializeMap() {
     terrain: 'p'
   };
 
-  const map = L.map('map', { minZoom: 9 });
+  const map = L.map('map', { 
+    minZoom: 9,
+    maxBounds: L.latLngBounds([
+      [clipBounds.minLat, clipBounds.minLon],
+      [clipBounds.maxLat, clipBounds.maxLon]
+    ])
+  });
 
   const savedView = localStorage.getItem(STORAGE_KEY_VIEW);
   if (savedView) {
@@ -72,7 +80,7 @@ export function initializeMap() {
     'Google Street View': googleStreetViewTiles
   };
 
-  L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
+  const overlaysControl = L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
 
   let currentBaseLayer;
 
@@ -123,5 +131,5 @@ export function initializeMap() {
     localStorage.setItem(STORAGE_KEY_VIEW, JSON.stringify(view));
   });
 
-  return { map, baseLayers, overlays, currentBaseLayer };
+  return { map, baseLayers, overlays, currentBaseLayer, overlaysControl };
 }
