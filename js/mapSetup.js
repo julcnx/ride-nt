@@ -9,7 +9,7 @@ export function initializeMap() {
   document.getElementById('map').style.display = 'block';
 
   const GOOGLE_LAYERS = {
-    satellite: 'y',
+    satellite: 's',
     terrain: 'p'
   };
 
@@ -71,7 +71,7 @@ export function initializeMap() {
     opacity: 1,
     minNativeZoom: 10,
     maxNativeZoom: 13,
-    attribution: 'GPX Overlay',
+    attribution: 'Ride NT',
     zIndex: 3
   });
 
