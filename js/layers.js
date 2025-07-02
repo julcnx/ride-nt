@@ -60,6 +60,7 @@ const mapillaryVector = L.vectorGrid.protobuf(
   {
     transparent: true,
     maxNativeZoom: 13,
+    zIndex: 1,
     vectorTileLayerStyles: {
       sequence: () => ({
         color: "rgb(20, 150, 60)",
@@ -67,6 +68,15 @@ const mapillaryVector = L.vectorGrid.protobuf(
         opacity: 0.7,
       }),
     },
+  },
+);
+
+const osmGpsTraces = L.tileLayer(
+  "https://{s}.gps-tile.openstreetmap.org/lines/{z}/{x}/{y}.png",
+  {
+    transparent: true,
+    maxNativeZoom: 18,
+    zIndex: 2,
   },
 );
 
@@ -81,4 +91,5 @@ export const overlays = {
   "Ride NT": customTiles,
   "Google Street View": googleStreetViewTiles,
   Mapillary: mapillaryVector,
+  "OpenStreetMap traces": osmGpsTraces,
 };
