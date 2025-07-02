@@ -11,7 +11,7 @@ const { map, baseLayers, overlays, currentBaseLayer, overlaysControl } =
 	initializeMap();
 
 addLegend(map);
-addContextMenu(map, baseLayers["Google Satellite"], currentBaseLayer);
+addContextMenu(map, baseLayers, currentBaseLayer);
 addKeyboardShortcuts(
 	map,
 	overlays,
