@@ -50,6 +50,7 @@ export function initializeMap() {
     `https://mt{s}.google.com/vt?lyrs=${GOOGLE_LAYERS.satellite}&x={x}&y={y}&z={z}`, {
       subdomains: ['0', '1', '2', '3'],
       attribution: '&copy; Google Satellite',
+      maxNativeZoom: 18,
     }
   );
 
@@ -57,6 +58,7 @@ export function initializeMap() {
     `https://mt{s}.google.com/vt?lyrs=${GOOGLE_LAYERS.terrain}&x={x}&y={y}&z={z}`, {
       subdomains: ['0', '1', '2', '3'],
       attribution: '&copy; Google Terrain',
+      maxNativeZoom: 18,
       opacity: 0.5
     }
   );
