@@ -86,9 +86,8 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
     contextMenu.style.display = "block";
   });
 
-  map.on("click", () => (contextMenu.style.display = "none"));
-  document.addEventListener(
-    "click",
-    () => (contextMenu.style.display = "none"),
-  );
+  const hideMenu = () => (contextMenu.style.display = "none");
+
+  map.on("mousedown", hideMenu);
+  document.addEventListener("mousedown", hideMenu);
 }
