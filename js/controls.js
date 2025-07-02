@@ -107,10 +107,7 @@ export function addKeyboardShortcuts(map, overlays, googleSatellite, currentBase
     if (e.key.toLowerCase() === 'o') {
       toggleOverlays();
     } else if (e.key === 'Delete') {
-      localStorage.removeItem('rident_auth');
-      localStorage.removeItem('rident_map_view');
-      localStorage.removeItem('rident_base_layer');
-      localStorage.removeItem('rident_overlays');
+      localStorage.clear();
       location.reload();
     }
   });

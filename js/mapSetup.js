@@ -1,10 +1,11 @@
-export const STORAGE_KEY_VIEW = "rident_map_view";
-export const STORAGE_KEY_BASE = "rident_base_layer";
-export const STORAGE_KEY_OVERLAYS = "rident_overlays";
-
 import { regionBounds } from './config.js';
 
 export function initializeMap() {
+
+  const STORAGE_KEY_VIEW = "rident_map_view";
+  const STORAGE_KEY_BASE = "rident_base_layer";
+  const STORAGE_KEY_OVERLAYS = "rident_overlays";
+
   document.getElementById('map').style.display = 'block';
 
   const GOOGLE_LAYERS = {
@@ -17,18 +18,32 @@ export function initializeMap() {
     maxBounds: L.latLngBounds(regionBounds)
   });
 
+
+  // remove attribution prefix
   map.attributionControl.setPrefix('');
 
-  const savedView = localStorage.getItem(STORAGE_KEY_VIEW);
-  if (savedView) {
-    try {
-      const { center, zoom } = JSON.parse(savedView);
-      map.setView(center, zoom);
-    } catch {
+  // setup persistent hash coordinates
+  const hash = new L.Hash(map);
+
+  const hashMatch = location.hash.match(/^#(\d+)\/([-\d.]+)\/([-\d.]+)$/);
+
+  if (hashMatch) {
+    const zoom = parseInt(hashMatch[1], 10);
+    const lat = parseFloat(hashMatch[2]);
+    const lng = parseFloat(hashMatch[3]);
+    map.setView([lat, lng], zoom);
+  } else {
+    const savedView = localStorage.getItem(STORAGE_KEY_VIEW);
+    if (savedView) {
+      try {
+        const { center, zoom } = JSON.parse(savedView);
+        map.setView(center, zoom);
+      } catch {
+        map.setView([18.79, 98.98], 10);
+      }
+    } else {
       map.setView([18.79, 98.98], 10);
     }
-  } else {
-    map.setView([18.79, 98.98], 10);
   }
 
   const googleSatellite = L.tileLayer(
