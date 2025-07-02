@@ -1,4 +1,6 @@
-html, body, #map {
+html,
+body,
+#map {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -7,12 +9,13 @@ html, body, #map {
 
 .context-menu {
   background: #fff;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   padding: 5px 0;
-  width: 180px;
+  width: 200px;
   user-select: none;
   cursor: default;
+  font-size: 14px;
 }
 
 .context-menu div {
@@ -30,7 +33,7 @@ html, body, #map {
 }
 
 .info.legend {
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .caption {
@@ -45,7 +48,7 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 }
 
