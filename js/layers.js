@@ -19,6 +19,21 @@ const googleTerrain = L.tileLayer(
   },
 );
 
+const esriFirefly = L.esri.basemapLayer("ImageryFirefly", {
+  maxNativeZoom: 19,
+});
+
+const esriClarity = L.esri.basemapLayer("ImageryClarity", {
+  maxNativeZoom: 17,
+});
+
+const esriWayback = L.tileLayer(
+  "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
+  {
+    maxNativeZoom: 17,
+  },
+);
+
 const osmStandard = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
@@ -91,9 +106,12 @@ const osmGpsTraces = L.tileLayer(
 
 export const baseLayers = {
   "Google Terrain": googleTerrain,
-  "Google Satellite": googleSatellite,
   "OSM Standard": osmStandard,
   "World Topo Map": worldTopoMap,
+  "Google Satellite": googleSatellite,
+  "ESRI Firefly": esriFirefly,
+  "ESRI Clarity": esriClarity,
+  "ESRI Wayback": esriWayback,
 };
 
 export const overlays = {
