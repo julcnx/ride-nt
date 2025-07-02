@@ -27,6 +27,13 @@ const osmStandard = L.tileLayer(
   },
 );
 
+const worldTopoMap = L.tileLayer(
+  "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+  {
+    maxNativeZoom: 19,
+  },
+);
+
 const customTiles = L.tileLayer("./tiles/{z}/{x}/{y}.png", {
   tileSize: 256,
   opacity: 1,
@@ -67,6 +74,7 @@ export const baseLayers = {
   "Google Terrain": googleTerrain,
   "Google Satellite": googleSatellite,
   "OSM Standard": osmStandard,
+  "World Topo Map": worldTopoMap,
 };
 
 export const overlays = {
