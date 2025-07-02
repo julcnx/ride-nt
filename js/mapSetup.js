@@ -88,6 +88,23 @@ export function initializeMap() {
     },
   );
 
+  const mapillaryVector = L.vectorGrid.protobuf(
+    "https://tiles.mapillary.com/maps/vtp/mly1_public/2/{z}/{x}/{y}?access_token=MLY|4100327730013843|5bb78b81720791946a9a7b956c57b7cf",
+    {
+      transparent: true,
+      maxNativeZoom: 13,
+      vectorTileLayerStyles: {
+        sequence: function (properties, zoom) {
+          return {
+            color: "rgb(20, 150, 60)", // Show sequences in green
+            weight: 10,
+            opacity: 0.7,
+          };
+        },
+      },
+    },
+  );
+
   const baseLayers = {
     "Google Terrain": googleTerrain,
     "Google Satellite": googleSatellite,
@@ -97,6 +114,7 @@ export function initializeMap() {
   const overlays = {
     "Ride NT": customTiles,
     "Google Street View": googleStreetViewTiles,
+    Mapillary: mapillaryVector,
   };
 
   const overlaysControl = L.control
