@@ -2,7 +2,7 @@ export const STORAGE_KEY_VIEW = "rident_map_view";
 export const STORAGE_KEY_BASE = "rident_base_layer";
 export const STORAGE_KEY_OVERLAYS = "rident_overlays";
 
-import { clipBounds } from './config.js';
+import { regionBounds } from './config.js';
 
 export function initializeMap() {
   document.getElementById('map').style.display = 'block';
@@ -12,13 +12,12 @@ export function initializeMap() {
     terrain: 'p'
   };
 
-  const map = L.map('map', { 
+  const map = L.map('map', {
     minZoom: 9,
-    maxBounds: L.latLngBounds([
-      [clipBounds.minLat, clipBounds.minLon],
-      [clipBounds.maxLat, clipBounds.maxLon]
-    ])
+    maxBounds: L.latLngBounds(regionBounds)
   });
+
+  map.attributionControl.setPrefix('');
 
   const savedView = localStorage.getItem(STORAGE_KEY_VIEW);
   if (savedView) {
@@ -57,15 +56,18 @@ export function initializeMap() {
     opacity: 1,
     minNativeZoom: 10,
     maxNativeZoom: 13,
-    attribution: 'GPX Overlay'
+    attribution: 'GPX Overlay',
+    zIndex: 3
   });
 
   const googleStreetViewTiles = L.tileLayer(
     'https://mts{s}.googleapis.com/vt?hl=en-US&lyrs=svv|cb_client:apiv3&style=40,18&x={x}&y={y}&z={z}', {
       subdomains: ['0', '1', '2', '3'],
       attribution: '&copy; Google Street View',
+      maxNativeZoom: 13,
       maxZoom: 20,
-      opacity: 0.7
+      opacity: 0.7,
+      zIndex: 1
     }
   );
 
@@ -80,7 +82,7 @@ export function initializeMap() {
     'Google Street View': googleStreetViewTiles
   };
 
-  const overlaysControl = L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
+  const overlaysControl = L.control.layers(baseLayers, overlays, { collapsed: false, autoZIndex: false }).addTo(map);
 
   let currentBaseLayer;
 

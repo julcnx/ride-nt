@@ -37,6 +37,7 @@ html, body, #map {
   font-size: 12px;
   color: #666;
   font-style: italic;
+  float: right;
 }
 
 body::-webkit-scrollbar {
@@ -46,4 +47,8 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.1);
   border-radius: 4px;
+}
+
+.leaflet-overlay-pane {
+  z-index: 2;
 }

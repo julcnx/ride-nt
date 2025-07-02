@@ -11,4 +11,4 @@ addLegend(map);
 addContextMenu(map, baseLayers['Google Satellite'], currentBaseLayer);
 addKeyboardShortcuts(map, overlays, baseLayers['Google Satellite'], currentBaseLayer);
 
-enableGpxDragAndDrop(map, overlaysControl);
+enableGpxDragAndDrop(map, overlaysControl, overlays);

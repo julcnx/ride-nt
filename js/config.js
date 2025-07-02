@@ -4,3 +4,9 @@ export const clipBounds = {
   minLon: 97.5,   // Western edge (Mae Sot)
   maxLon: 100.5   // Eastern edge
 };
+
+
+export const regionBounds = [
+  [clipBounds.minLat, clipBounds.minLon],
+  [clipBounds.maxLat, clipBounds.maxLon]
+];
