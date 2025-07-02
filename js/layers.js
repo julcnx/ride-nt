@@ -71,6 +71,15 @@ const mapillaryVector = L.vectorGrid.protobuf(
   },
 );
 
+const kartaViewTiles = L.tileLayer(
+  "https://karta-gateway.geo.azure.myteksi.net/view/api/2.0/sequence/tiles/{x}/{y}/{z}.png",
+  {
+    transparent: true,
+    minNativeZoom: 13,
+    maxNativeZoom: 20,
+  },
+);
+
 const osmGpsTraces = L.tileLayer(
   "https://{s}.gps-tile.openstreetmap.org/lines/{z}/{x}/{y}.png",
   {
@@ -89,7 +98,8 @@ export const baseLayers = {
 
 export const overlays = {
   "Ride NT": customTiles,
+  "OpenStreetMap traces": osmGpsTraces,
   "Google Street View": googleStreetViewTiles,
   Mapillary: mapillaryVector,
-  "OpenStreetMap traces": osmGpsTraces,
+  KartaView: kartaViewTiles,
 };
