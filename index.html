@@ -1,34 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RideNT Map</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RideNT Map</title>
 
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/index.css" />
-</head>
-<body>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <div id="map"></div>
 
-  <div id="map"></div>
+    <!-- Context menu for map right-click -->
+    <div
+      id="context-menu"
+      class="context-menu"
+      style="display: none; position: absolute; z-index: 10000"
+    ></div>
 
-  <!-- Context menu for map right-click -->
-  <div id="context-menu" class="context-menu" style="display:none; position:absolute; z-index:10000;"></div>
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      defer
+    ></script>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/2.2.0/gpx.js"
+      defer
+    ></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/2.2.0/gpx.js" defer></script>
-
-  <script src="https://unpkg.com/leaflet-hash@0.2.1/leaflet-hash.js" defer></script>
-
-  <!-- Your JS modules -->
-  <script type="module" src="js/index.js"></script>
-</body>
+    <!-- Your JS modules -->
+    <script type="module" src="js/index.js"></script>
+  </body>
 </html>

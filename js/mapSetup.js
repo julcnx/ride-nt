@@ -17,11 +17,7 @@ export function initializeMap() {
     maxBounds: L.latLngBounds(regionBounds),
   });
 
-  // remove attribution prefix
   map.attributionControl.setPrefix("");
-
-  // setup persistent hash coordinates
-  const hash = new L.Hash(map);
 
   const hashMatch = location.hash.match(/^#(\d+)\/([-\d.]+)\/([-\d.]+)$/);
 
@@ -151,11 +147,12 @@ export function initializeMap() {
   });
 
   map.on("moveend zoomend", () => {
-    const view = {
-      center: map.getCenter(),
-      zoom: map.getZoom(),
-    };
-    localStorage.setItem(STORAGE_KEY_VIEW, JSON.stringify(view));
+    const center = map.getCenter();
+    const zoom = map.getZoom();
+    const hash = `#${zoom}/${center.lat.toFixed(6)}/${center.lng.toFixed(6)}`;
+    location.hash = hash;
+
+    localStorage.setItem(STORAGE_KEY_VIEW, JSON.stringify({ center, zoom }));
   });
 
   return { map, baseLayers, overlays, currentBaseLayer, overlaysControl };
