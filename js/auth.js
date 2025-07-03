@@ -1,6 +1,6 @@
-const PASSWORD = "rident123";
+const PASSWORD = "RideSafe2025!";
 const STORAGE_KEY_AUTH = "rident_auth";
-const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const ONE_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 
 export function isPasswordValid() {
   const stored = localStorage.getItem(STORAGE_KEY_AUTH);
@@ -14,8 +14,11 @@ export function isPasswordValid() {
 }
 
 export function storePassword() {
-  const expires = Date.now() + ONE_WEEK_MS;
-  localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify({ password: PASSWORD, expires }));
+  const expires = Date.now() + ONE_MONTH_MS;
+  localStorage.setItem(
+    STORAGE_KEY_AUTH,
+    JSON.stringify({ password: PASSWORD, expires }),
+  );
 }
 
 export function promptPassword() {
@@ -23,7 +26,8 @@ export function promptPassword() {
     const input = prompt("Enter password to view the map:");
     if (input !== PASSWORD) {
       alert("Incorrect password. Access denied.");
-      document.body.innerHTML = "<h2 style='text-align:center;margin-top:20%'>Access Denied</h2>";
+      document.body.innerHTML =
+        "<h2 style='text-align:center;margin-top:20%'>Access Denied</h2>";
       throw new Error("Unauthorized");
     }
     storePassword();
