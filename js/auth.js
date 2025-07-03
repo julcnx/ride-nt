@@ -1,4 +1,4 @@
-const PASSWORD = "RideSafe2025!";
+const PASSWORD = "UmlkZVNhZmUyMDI1IQ==";
 const STORAGE_KEY_AUTH = "rident_auth";
 const ONE_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -24,7 +24,7 @@ export function storePassword() {
 export function promptPassword() {
   if (!isPasswordValid()) {
     const input = prompt("Enter password to view the map:");
-    if (input !== PASSWORD) {
+    if (input !== atob(PASSWORD)) {
       alert("Incorrect password. Access denied.");
       document.body.innerHTML =
         "<h2 style='text-align:center;margin-top:20%'>Access Denied</h2>";
