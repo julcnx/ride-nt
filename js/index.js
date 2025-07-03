@@ -5,6 +5,7 @@ import { addLegend } from "./legend.js";
 import { addContextMenu } from "./contextMenu.js";
 import { enableGpxDragAndDrop } from "./gpxDragDrop.js";
 import { addKeyboardShortcuts } from "./keyboard.js";
+import { addHighlightPen } from "./draw.js";
 
 markDevTitle();
 promptPassword();
@@ -20,5 +21,6 @@ addKeyboardShortcuts(
 	baseLayers["Google Satellite"],
 	currentBaseLayer,
 );
+addHighlightPen(map);
 
 enableGpxDragAndDrop(map, overlaysControl, overlays);
