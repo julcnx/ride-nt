@@ -5,14 +5,8 @@ export function addKeyboardShortcuts(
   currentBaseLayer,
 ) {
   function toggleOverlays() {
-    const anyVisible = Object.values(overlays).some((layer) =>
-      map.hasLayer(layer),
-    );
-    if (anyVisible) {
-      Object.values(overlays).forEach((layer) => map.removeLayer(layer));
-    } else {
-      Object.values(overlays).forEach((layer) => map.addLayer(layer));
-    }
+    const el = document.getElementById('map');
+    el.classList.toggle('hide-overlays'); // toggles the 'hidden' class on/off
   }
 
   document.addEventListener("keydown", (e) => {

@@ -7,6 +7,10 @@ body,
   font-family: Arial, sans-serif;
 }
 
+.hide-overlays .overlay, .hide-overlays .leaflet-overlay-pane {
+  display: none;
+}
+
 .context-menu {
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);

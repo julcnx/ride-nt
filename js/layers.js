@@ -56,6 +56,7 @@ const customTiles = L.tileLayer("./tiles/{z}/{x}/{y}.png", {
   maxNativeZoom: 13,
   attribution: "Ride NT",
   zIndex: 3,
+  className: 'overlay'
 });
 
 const googleStreetViewTiles = L.tileLayer(
@@ -67,6 +68,7 @@ const googleStreetViewTiles = L.tileLayer(
     maxZoom: 20,
     opacity: 0.7,
     zIndex: 1,
+    className: 'overlay'
   },
 );
 
@@ -76,6 +78,7 @@ const mapillaryVector = L.vectorGrid.protobuf(
     transparent: true,
     maxNativeZoom: 13,
     zIndex: 1,
+    className: 'overlay',
     vectorTileLayerStyles: {
       sequence: () => ({
         color: "rgb(20, 150, 60)",
@@ -92,6 +95,7 @@ const kartaViewTiles = L.tileLayer(
     transparent: true,
     minNativeZoom: 13,
     maxNativeZoom: 20,
+    className: 'overlay',
   },
 );
 
@@ -101,6 +105,7 @@ const osmGpsTraces = L.tileLayer(
     transparent: true,
     maxNativeZoom: 18,
     zIndex: 2,
+    className: 'overlay',
   },
 );
 
