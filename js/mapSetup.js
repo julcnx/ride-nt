@@ -12,7 +12,7 @@ export function initializeMap() {
   setInitialView(map);
 
   const overlaysControl = L.control
-    .layers(baseLayers, overlays, { collapsed: false, autoZIndex: false })
+    .layers(baseLayers, overlays, { collapsed: true, autoZIndex: false })
     .addTo(map);
 
   const currentBaseLayer = restoreLayerSelection(map, baseLayers, overlays);
