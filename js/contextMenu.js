@@ -8,7 +8,7 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
     item.style.cursor = "pointer";
     item.onmouseenter = () => (item.style.background = "#eee");
     item.onmouseleave = () => (item.style.background = "");
-    item.onclick = () => {
+    item.onmousedown = () => {
       action();
       contextMenu.style.display = "none";
     };
@@ -81,6 +81,7 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
       });
     });
 
+    // Position and show menu
     contextMenu.style.left = e.originalEvent.pageX + "px";
     contextMenu.style.top = e.originalEvent.pageY + "px";
     contextMenu.style.display = "block";

@@ -8,9 +8,9 @@ export function addHighlightPen(map) {
     const baseWeight = 25;
     const scaledWeight = Math.max(4, baseWeight - (18 - zoom) * 2);
     return {
-      color: 'magenta',
+      color: 'yellow',
       weight: scaledWeight,
-      opacity: 0.2,
+      opacity: 0.5,
     };
   };
 
@@ -23,13 +23,15 @@ export function addHighlightPen(map) {
     drawBtn.href = '#';
     drawBtn.innerHTML = '🖊️';
     drawBtn.title = 'Toggle highlighter';
-    drawBtn.style.padding = '0 4px';
+    drawBtn.style.padding = '6px 10px';
+    drawBtn.style.fontSize = '20px';
 
     const clearBtn = L.DomUtil.create('a', '', container);
     clearBtn.href = '#';
     clearBtn.innerHTML = '🧽';
     clearBtn.title = 'Clear highlights';
-    clearBtn.style.padding = '0 4px';
+    clearBtn.style.padding = '6px 10px';
+    clearBtn.style.fontSize = '20px';
 
     drawBtn.onclick = (e) => {
       e.preventDefault();
@@ -44,8 +46,6 @@ export function addHighlightPen(map) {
       saveToUrl();
     };
 
-    return container;
-
     function updateDrawButton() {
       if (drawing) {
         drawBtn.style.background = '#ff0';
@@ -55,6 +55,8 @@ export function addHighlightPen(map) {
         drawBtn.style.color = '';
       }
     }
+
+    return container;
   };
 
   controls.addTo(map);
@@ -73,27 +75,57 @@ export function addHighlightPen(map) {
     map.scrollWheelZoom.enable();
   }
 
-  map.on('mousedown', (e) => {
+  function getLatLngFromEvent(e) {
+    if (e.latlng) return e.latlng;
+    if (e.touches && e.touches.length > 0) {
+      return map.containerPointToLatLng(
+        map.mouseEventToContainerPoint(e.touches[0])
+      );
+    }
+    return null;
+  }
+
+  function startDrawing(e) {
     if (!drawing) return;
+    const latlng = getLatLngFromEvent(e);
+    if (!latlng) return;
 
     disableMapInteractions();
 
-    currentLine = L.polyline([e.latlng], polylineOptions(map)).addTo(map);
+    currentLine = L.polyline([latlng], polylineOptions(map)).addTo(map);
     drawnLines.push(currentLine);
-  });
 
-  map.on('mousemove', (e) => {
+    // prevent scrolling while drawing
+    if (e.preventDefault) e.preventDefault();
+  }
+
+  function continueDrawing(e) {
     if (!drawing || !currentLine) return;
-    currentLine.addLatLng(e.latlng);
-  });
+    const latlng = getLatLngFromEvent(e);
+    if (!latlng) return;
+    currentLine.addLatLng(latlng);
+    if (e.preventDefault) e.preventDefault();
+  }
 
-  map.on('mouseup', () => {
+  function endDrawing(e) {
     if (drawing && currentLine) {
       currentLine = null;
       saveToUrl();
       enableMapInteractions();
     }
-  });
+    if (e.preventDefault) e.preventDefault();
+  }
+
+  // Mouse events
+  map.on('mousedown', startDrawing);
+  map.on('mousemove', continueDrawing);
+  map.on('mouseup', endDrawing);
+
+  // Touch events (on the map container)
+  const mapContainer = map.getContainer();
+  mapContainer.addEventListener('touchstart', startDrawing, { passive: false });
+  mapContainer.addEventListener('touchmove', continueDrawing, { passive: false });
+  mapContainer.addEventListener('touchend', endDrawing, { passive: false });
 
   map.on('zoomend', () => {
     drawnLines.forEach((line) => line.setStyle(polylineOptions(map)));
@@ -116,7 +148,6 @@ export function addHighlightPen(map) {
     }
   });
 
-  // Helper to update draw button style from keyboard
   function updateDrawButton() {
     const drawBtn = document.querySelector('.leaflet-bar a[title="Toggle highlighter"]');
     if (!drawBtn) return;
