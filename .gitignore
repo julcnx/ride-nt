@@ -1,0 +1,29 @@
+/public/tiles/
+
+# Node modules
+/node_modules/
+
+# Build output
+/dist/
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Optional: if you create local VSCode settings
+.vscode/
+
+# Optional: macOS system files
+.DS_Store
+
+# Optional: if you have local test coverage reports
+/coverage/
+
+# Optional: ignore the gh-pages branch folder if you clone it locally
+/gh-pages/
