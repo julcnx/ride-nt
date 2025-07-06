@@ -21,8 +21,9 @@ export function enableGpxDragAndDrop(map, overlaysControl, overlays = {}) {
         const gpxLayer = new L.GPX(gpxText, {
           async: true,
           polyline_options: {
-            color: 'magenta',
-            weight: 3,
+            color: 'yellow',
+            weight: 20,
+            opacity: 0.3
           },
           gpx_options: {
             joinTrackSegments: false

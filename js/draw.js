@@ -8,9 +8,9 @@ export function addHighlightPen(map) {
     const baseWeight = 25;
     const scaledWeight = Math.max(4, baseWeight - (18 - zoom) * 2);
     return {
-      color: "yellow",
+      color: "#9400D3",
       weight: scaledWeight,
-      opacity: 0.5,
+      opacity: 0.3,
     };
   };
 

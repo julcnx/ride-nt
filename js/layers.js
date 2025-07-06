@@ -49,7 +49,7 @@ const worldTopoMap = L.tileLayer(
   },
 );
 
-const customTiles = L.tileLayer("./tiles/{z}/{x}/{y}.png", {
+const customTiles = L.tileLayer(`./tiles/{z}/{x}/{y}.png?ts=${__TILES_TIMESTAMP__}`, {
   tileSize: 256,
   opacity: 1,
   minNativeZoom: 10,
@@ -89,15 +89,15 @@ const mapillaryVector = L.vectorGrid.protobuf(
   },
 );
 
-const kartaViewTiles = L.tileLayer(
-  "https://karta-gateway.geo.azure.myteksi.net/view/api/2.0/sequence/tiles/{x}/{y}/{z}.png",
-  {
-    transparent: true,
-    minNativeZoom: 13,
-    maxNativeZoom: 20,
-    className: 'overlay',
-  },
-);
+// const kartaViewTiles = L.tileLayer(
+//   "https://karta-gateway.geo.azure.myteksi.net/view/api/2.0/sequence/tiles/{x}/{y}/{z}.png",
+//   {
+//     transparent: true,
+//     minNativeZoom: 13,
+//     maxNativeZoom: 20,
+//     className: 'overlay',
+//   },
+// );
 
 const osmGpsTraces = L.tileLayer(
   "https://{s}.gps-tile.openstreetmap.org/lines/{z}/{x}/{y}.png",
@@ -124,5 +124,5 @@ export const overlays = {
   "OpenStreetMap traces": osmGpsTraces,
   "Google Street View": googleStreetViewTiles,
   Mapillary: mapillaryVector,
-  KartaView: kartaViewTiles,
+  // KartaView: kartaViewTiles,
 };
