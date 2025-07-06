@@ -46,6 +46,10 @@ export function addHighlightPen(map) {
       saveToUrl();
     };
 
+    // ✅ Prevent event bubbling from control to map
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.disableScrollPropagation(container);
+
     function updateDrawButton() {
       if (drawing) {
         drawBtn.style.background = "#ff0";
@@ -95,7 +99,6 @@ export function addHighlightPen(map) {
     currentLine = L.polyline([latlng], polylineOptions(map)).addTo(map);
     drawnLines.push(currentLine);
 
-    // prevent scrolling while drawing
     if (e.preventDefault) e.preventDefault();
   }
 
@@ -110,7 +113,7 @@ export function addHighlightPen(map) {
   function endDrawing(e) {
     if (drawing && currentLine) {
       currentLine = null;
-      drawing = false; // Auto-exit drawing mode after a shape is completed
+      drawing = false;
       updateDrawButton();
       saveToUrl();
       enableMapInteractions();
@@ -123,26 +126,26 @@ export function addHighlightPen(map) {
   map.on("mousemove", continueDrawing);
   map.on("mouseup", endDrawing);
 
-  // Touch events (on the map container)
+  // Touch events
   const mapContainer = map.getContainer();
-  mapContainer.addEventListener("touchstart", startDrawing, { passive: false });
+  mapContainer.addEventListener("touchstart", startDrawing, { passive: true });
   mapContainer.addEventListener("touchmove", continueDrawing, {
-    passive: false,
+    passive: true,
   });
-  mapContainer.addEventListener("touchend", endDrawing, { passive: false });
+  mapContainer.addEventListener("touchend", endDrawing, { passive: true });
 
+  // Adjust stroke width when zoom changes
   map.on("zoomend", () => {
     drawnLines.forEach((line) => line.setStyle(polylineOptions(map)));
   });
 
+  // Keyboard shortcuts
   window.addEventListener("keydown", (e) => {
-    // 'd' key toggles drawing mode
     if (e.key.toLowerCase() === "d") {
       drawing = !drawing;
       updateDrawButton();
     }
 
-    // Ctrl+Z or Cmd+Z to undo last drawn line
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
       if (drawnLines.length > 0) {
         const lastLine = drawnLines.pop();
