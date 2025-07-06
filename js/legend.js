@@ -2,18 +2,16 @@ export function addLegend(map) {
 	const legend = L.control({ position: "bottomright" });
 
 	legend.onAdd = function () {
-		const div = L.DomUtil.create("div", "info legend");
-		div.style.background = "rgba(255, 255, 255, 0.9)";
-		div.style.padding = "8px";
-		div.style.borderRadius = "5px";
-		div.style.fontSize = "14px";
-		div.style.color = "#333";
-		div.style.lineHeight = "1.4";
-		div.style.width = "200px";
-		div.style.position = "relative";
-		div.style.transition = "all 0.3s ease";
+		const container = L.DomUtil.create("div", "info legend");
+		container.style.position = "relative";
+		container.style.transition = "all 0.3s ease";
+		container.style.fontSize = "14px";
+		container.style.color = "#333";
+		container.style.maxWidth = "250px";
 
 		const opacity = 1;
+		const storageKey = "rideNT-legend-visible";
+		let isVisible = localStorage.getItem(storageKey) !== "false"; // default true
 
 		function colorBox(color) {
 			return `<span style="
@@ -29,66 +27,93 @@ export function addLegend(map) {
 		const PAVED_COLOR = "rgba(51, 102, 255, 1)";
 		const MAYBE_COLOR = "rgba(160,160,160,1)";
 
-		const storageKey = "rideNT-legend-visible";
-		let isVisible = localStorage.getItem(storageKey) !== "false"; // default true
+		// --- Full panel content
+		const panel = document.createElement("div");
+		panel.style.background = "rgba(255, 255, 255, 0.95)";
+		panel.style.borderRadius = "6px";
+		panel.style.padding = "8px";
+		panel.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+		panel.style.display = "none";
+		panel.style.flexDirection = "column";
 
-		// --- Header with title and toggle button
 		const header = document.createElement("div");
 		header.style.display = "flex";
 		header.style.justifyContent = "space-between";
 		header.style.alignItems = "center";
-		header.style.cursor = "pointer";
+		header.style.marginBottom = "6px";
 
 		const title = document.createElement("span");
 		title.textContent = "RideNT Legend";
+		title.style.fontWeight = "bold";
 
-		const toggleBtn = document.createElementNS(
-			"http://www.w3.org/2000/svg",
-			"svg",
-		);
-		toggleBtn.setAttribute("width", "20");
-		toggleBtn.setAttribute("height", "20");
-		toggleBtn.setAttribute("viewBox", "0 0 24 24");
-		toggleBtn.style.transition = "transform 0.2s ease";
-		toggleBtn.innerHTML = `<path fill="#333" d="M7 10l5 5 5-5z"/>`; // down
+		const collapseBtn = document.createElement("a");
+		collapseBtn.href = "#";
+		collapseBtn.innerHTML = "🔽";
+		collapseBtn.title = "Collapse legend";
+		collapseBtn.style.fontSize = "18px";
+		collapseBtn.style.textDecoration = "none";
+		collapseBtn.style.cursor = "pointer";
+		collapseBtn.style.padding = "4px";
 
-		header.appendChild(title);
-		header.appendChild(toggleBtn);
-
-		// --- Collapsible content
-		const content = document.createElement("div");
-		content.id = "legend-content";
-		content.innerHTML = `
-			${colorBox(PAVED_COLOR)} Paved<br>
-			${colorBox("rgba(0,140,60,OPACITY)")} Fast dirt <span class="caption">&gt; 30km/h</span> <br>
-			${colorBox("rgba(255,179,0,OPACITY)")} Moderate dirt <span class="caption">15–30 km/h</span><br>
-			${colorBox("rgba(255,40,40,OPACITY)")} Slow / Technical <span class="caption">7–15 km/h</span><br>
-			${colorBox("rgba(128,0,128,OPACITY)")} Very technical <span class="caption">&lt; 7 km/h</span><br>
-			${colorBox(MAYBE_COLOR)} Potential trail<br>
-			<br>
-			<span class="caption">Speeds are approximate, calculated from GPX trails in dry conditions, with climate season and rider speed factors considered, but accuracy is not guaranteed.</span>
-		`;
-
-		const updateVisibility = () => {
-			content.style.display = isVisible ? "block" : "none";
-			title.style.fontWeight = isVisible ? "bold" : "normal";
-			header.style.marginBottom = isVisible ? "6px" : "0px";
-			toggleBtn.innerHTML = isVisible
-				? `<path fill="#333" d="M7 10l5 5 5-5z"/>` // down
-				: `<path fill="#333" d="M7 14l5-5 5 5z"/>`; // up
-			localStorage.setItem(storageKey, isVisible);
-		};
-
-		header.onclick = () => {
-			isVisible = !isVisible;
+		collapseBtn.onclick = (e) => {
+			e.preventDefault();
+			isVisible = false;
 			updateVisibility();
 		};
 
+		header.appendChild(title);
+		header.appendChild(collapseBtn);
+
+		const content = document.createElement("div");
+		content.innerHTML = `
+			${colorBox(PAVED_COLOR)} Paved<br>
+			${colorBox("rgba(0,140,60,OPACITY)")} Fast dirt<br>
+			${colorBox("rgba(255,179,0,OPACITY)")} Moderate dirt<br>
+			${colorBox("rgba(255,40,40,OPACITY)")} Slow / Technical<br>
+			${colorBox("rgba(128,0,128,OPACITY)")} Very technical<br>
+			${colorBox(MAYBE_COLOR)} Potential trail<br>
+			<br>
+			<span class="caption">Speeds are approximate, based on dry GPX tracks with climate & rider factors considered. Accuracy not guaranteed.</span>
+		`;
+
+		panel.appendChild(header);
+		panel.appendChild(content);
+
+		// --- Floating icon button (only shown when collapsed)
+		const iconBtn = document.createElement("a");
+		iconBtn.href = "#";
+		iconBtn.innerHTML = "❓";
+		iconBtn.title = "Show legend";
+		iconBtn.style.display = "none";
+		iconBtn.style.textDecoration = "none";
+		iconBtn.style.fontSize = "20px";
+		iconBtn.style.width = "36px";
+		iconBtn.style.height = "36px";
+		iconBtn.style.textAlign = "center";
+		iconBtn.style.lineHeight = "36px";
+		iconBtn.style.borderRadius = "6px";
+		iconBtn.style.background = "white";
+		iconBtn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+		iconBtn.style.cursor = "pointer";
+
+		iconBtn.onclick = (e) => {
+			e.preventDefault();
+			isVisible = true;
+			updateVisibility();
+		};
+
+		function updateVisibility() {
+			localStorage.setItem(storageKey, isVisible);
+			panel.style.display = isVisible ? "flex" : "none";
+			iconBtn.style.display = isVisible ? "none" : "inline-block";
+		}
+
 		updateVisibility();
 
-		div.appendChild(header);
-		div.appendChild(content);
-		return div;
+		container.appendChild(panel);
+		container.appendChild(iconBtn);
+
+		return container;
 	};
 
 	legend.addTo(map);

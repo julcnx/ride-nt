@@ -8,30 +8,30 @@ export function addHighlightPen(map) {
     const baseWeight = 25;
     const scaledWeight = Math.max(4, baseWeight - (18 - zoom) * 2);
     return {
-      color: 'yellow',
+      color: "yellow",
       weight: scaledWeight,
       opacity: 0.5,
     };
   };
 
-  const controls = L.control({ position: 'bottomleft' });
+  const controls = L.control({ position: "bottomleft" });
 
   controls.onAdd = function () {
-    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
 
-    const drawBtn = L.DomUtil.create('a', '', container);
-    drawBtn.href = '#';
-    drawBtn.innerHTML = '🖊️';
-    drawBtn.title = 'Toggle highlighter';
-    drawBtn.style.padding = '6px 10px';
-    drawBtn.style.fontSize = '20px';
+    const drawBtn = L.DomUtil.create("a", "", container);
+    drawBtn.href = "#";
+    drawBtn.innerHTML = "🖊️";
+    drawBtn.title = "Toggle highlighter";
+    drawBtn.style.padding = "6px 10px";
+    drawBtn.style.fontSize = "20px";
 
-    const clearBtn = L.DomUtil.create('a', '', container);
-    clearBtn.href = '#';
-    clearBtn.innerHTML = '🧽';
-    clearBtn.title = 'Clear highlights';
-    clearBtn.style.padding = '6px 10px';
-    clearBtn.style.fontSize = '20px';
+    const clearBtn = L.DomUtil.create("a", "", container);
+    clearBtn.href = "#";
+    clearBtn.innerHTML = "🧽";
+    clearBtn.title = "Clear highlights";
+    clearBtn.style.padding = "6px 10px";
+    clearBtn.style.fontSize = "20px";
 
     drawBtn.onclick = (e) => {
       e.preventDefault();
@@ -48,11 +48,11 @@ export function addHighlightPen(map) {
 
     function updateDrawButton() {
       if (drawing) {
-        drawBtn.style.background = '#ff0';
-        drawBtn.style.color = 'black';
+        drawBtn.style.background = "#ff0";
+        drawBtn.style.color = "black";
       } else {
-        drawBtn.style.background = 'white';
-        drawBtn.style.color = '';
+        drawBtn.style.background = "white";
+        drawBtn.style.color = "";
       }
     }
 
@@ -79,7 +79,7 @@ export function addHighlightPen(map) {
     if (e.latlng) return e.latlng;
     if (e.touches && e.touches.length > 0) {
       return map.containerPointToLatLng(
-        map.mouseEventToContainerPoint(e.touches[0])
+        map.mouseEventToContainerPoint(e.touches[0]),
       );
     }
     return null;
@@ -110,6 +110,8 @@ export function addHighlightPen(map) {
   function endDrawing(e) {
     if (drawing && currentLine) {
       currentLine = null;
+      drawing = false; // Auto-exit drawing mode after a shape is completed
+      updateDrawButton();
       saveToUrl();
       enableMapInteractions();
     }
@@ -117,29 +119,31 @@ export function addHighlightPen(map) {
   }
 
   // Mouse events
-  map.on('mousedown', startDrawing);
-  map.on('mousemove', continueDrawing);
-  map.on('mouseup', endDrawing);
+  map.on("mousedown", startDrawing);
+  map.on("mousemove", continueDrawing);
+  map.on("mouseup", endDrawing);
 
   // Touch events (on the map container)
   const mapContainer = map.getContainer();
-  mapContainer.addEventListener('touchstart', startDrawing, { passive: false });
-  mapContainer.addEventListener('touchmove', continueDrawing, { passive: false });
-  mapContainer.addEventListener('touchend', endDrawing, { passive: false });
+  mapContainer.addEventListener("touchstart", startDrawing, { passive: false });
+  mapContainer.addEventListener("touchmove", continueDrawing, {
+    passive: false,
+  });
+  mapContainer.addEventListener("touchend", endDrawing, { passive: false });
 
-  map.on('zoomend', () => {
+  map.on("zoomend", () => {
     drawnLines.forEach((line) => line.setStyle(polylineOptions(map)));
   });
 
-  window.addEventListener('keydown', (e) => {
+  window.addEventListener("keydown", (e) => {
     // 'd' key toggles drawing mode
-    if (e.key.toLowerCase() === 'd') {
+    if (e.key.toLowerCase() === "d") {
       drawing = !drawing;
       updateDrawButton();
     }
 
     // Ctrl+Z or Cmd+Z to undo last drawn line
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
       if (drawnLines.length > 0) {
         const lastLine = drawnLines.pop();
         map.removeLayer(lastLine);
@@ -149,14 +153,16 @@ export function addHighlightPen(map) {
   });
 
   function updateDrawButton() {
-    const drawBtn = document.querySelector('.leaflet-bar a[title="Toggle highlighter"]');
+    const drawBtn = document.querySelector(
+      '.leaflet-bar a[title="Toggle highlighter"]',
+    );
     if (!drawBtn) return;
     if (drawing) {
-      drawBtn.style.background = '#ff0';
-      drawBtn.style.color = 'black';
+      drawBtn.style.background = "#ff0";
+      drawBtn.style.color = "black";
     } else {
-      drawBtn.style.background = 'white';
-      drawBtn.style.color = '';
+      drawBtn.style.background = "white";
+      drawBtn.style.color = "";
     }
   }
 
@@ -168,9 +174,9 @@ export function addHighlightPen(map) {
 
     const encoded = drawnLines
       .map((line) =>
-        polyline.encode(line.getLatLngs().map((p) => [p.lat, p.lng]))
+        polyline.encode(line.getLatLngs().map((p) => [p.lat, p.lng])),
       )
-      .join(';');
+      .join(";");
 
     updateUrlParam(encoded);
   }
@@ -179,34 +185,34 @@ export function addHighlightPen(map) {
     const params = new URLSearchParams(window.location.search);
 
     if (value) {
-      params.set('data', value);
+      params.set("data", value);
     } else {
-      params.delete('data');
+      params.delete("data");
     }
 
     const newUrl =
       window.location.pathname +
-      (params.toString() ? '?' + params.toString() : '') +
+      (params.toString() ? "?" + params.toString() : "") +
       window.location.hash;
 
-    window.history.replaceState(null, '', newUrl);
+    window.history.replaceState(null, "", newUrl);
   }
 
   function loadFromUrl() {
     const params = new URLSearchParams(window.location.search);
-    const raw = params.get('data');
+    const raw = params.get("data");
     if (!raw) return;
 
-    const segments = raw.split(';');
+    const segments = raw.split(";");
     segments.forEach((encoded) => {
       try {
-        const coords = polyline.decode(encoded).map(([lat, lng]) =>
-          L.latLng(lat, lng)
-        );
+        const coords = polyline
+          .decode(encoded)
+          .map(([lat, lng]) => L.latLng(lat, lng));
         const line = L.polyline(coords, polylineOptions(map)).addTo(map);
         drawnLines.push(line);
       } catch (e) {
-        console.warn('Invalid polyline segment:', encoded);
+        console.warn("Invalid polyline segment:", encoded);
       }
     });
   }
