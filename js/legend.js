@@ -11,7 +11,7 @@ export function addLegend(map) {
 
 		const opacity = 1;
 		const storageKey = "rideNT-legend-visible";
-		let isVisible = localStorage.getItem(storageKey) !== "false"; // default true
+		let isVisible = false;
 
 		function colorBox(color) {
 			return `<span style="
@@ -103,7 +103,6 @@ export function addLegend(map) {
 		};
 
 		function updateVisibility() {
-			localStorage.setItem(storageKey, isVisible);
 			panel.style.display = isVisible ? "flex" : "none";
 			iconBtn.style.display = isVisible ? "none" : "inline-block";
 		}

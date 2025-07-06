@@ -28,8 +28,10 @@ export function promptPassword() {
       alert("Incorrect password. Access denied.");
       document.body.innerHTML =
         "<h2 style='text-align:center;margin-top:20%'>Access Denied</h2>";
-      throw new Error("Unauthorized");
+      // throw new Error("Unauthorized");
     }
     storePassword();
   }
+
+  document.body.classList.remove("locked");
 }

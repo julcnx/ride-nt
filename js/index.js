@@ -8,7 +8,6 @@ import { addKeyboardShortcuts } from "./keyboard.js";
 import { addHighlightPen } from "./draw.js";
 
 markDevTitle();
-promptPassword();
 
 const { map, baseLayers, overlays, currentBaseLayer, overlaysControl } =
 	initializeMap();
@@ -24,3 +23,8 @@ addKeyboardShortcuts(
 addHighlightPen(map);
 
 enableGpxDragAndDrop(map, overlaysControl, overlays);
+
+window.addEventListener("load", promptPassword);
+document.addEventListener("visibilitychange", () => {
+	if (document.visibilityState === "visible") promptPassword();
+});

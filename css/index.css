@@ -8,6 +8,10 @@ body,
   user-select: none;
 }
 
+body.locked {
+  visibility: hidden;
+}
+
 .hide-overlays .overlay,
 .hide-overlays .leaflet-overlay-pane {
   display: none;
