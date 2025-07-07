@@ -1,3 +1,5 @@
+import { isDev } from "./dev.js";
+
 export function addContextMenu(map, baseLayers, currentBaseLayer) {
   const contextMenu = document.getElementById("context-menu");
 
@@ -29,8 +31,10 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
 
     addMenuItem("Edit in OpenStreetMap", () => {
       window.open(
-        `https://www.openstreetmap.org/edit?editor=id&lat=${lat}&lon=${lng}&zoom=${map.getZoom()}`,
-        "_blank",
+        `https://www.openstreetmap.org/edit?editor=id&lat=${lat}&lon=${lng}&zoom=${Math.max(
+          16,
+          map.getZoom()
+        )}`
       );
     });
 
@@ -45,33 +49,23 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
         center: [lat, lng].join(","),
         zoom: z,
       });
-      window.open(
-        `https://www.google.com/maps/@?${unescape(params)}`,
-        "_blank",
-      );
+      window.open(`https://www.google.com/maps/@?${unescape(params)}`);
     });
 
     addMenuItem("Open in Google Street View", () => {
-      window.open(
-        `https://www.google.com/maps?q=&layer=c&cbll=${lat},${lng}`,
-        "_blank",
-      );
+      window.open(`https://www.google.com/maps?q=&layer=c&cbll=${lat},${lng}`);
     });
 
     addMenuItem("Open in Komoot", () => {
-      window.open(
-        `https://www.komoot.com/plan/@${lat},${lng},${z}z?sport=mtb`,
-        "_blank",
-      );
+      window.open(`https://www.komoot.com/plan/@${lat},${lng},${z}z?sport=mtb`);
     });
 
-    addMenuItem("Open in Mapillary", () => {
-      const params = new URLSearchParams({ lat, lng, z });
-      window.open(
-        `https://www.mapillary.com/app/?${unescape(params)}`,
-        "_blank",
-      );
-    });
+    if (isDev()) {
+      addMenuItem("Open in Mapillary", () => {
+        const params = new URLSearchParams({ lat, lng, z });
+        window.open(`https://www.mapillary.com/app/?${unescape(params)}`);
+      });
+    }
 
     addSeparator();
 

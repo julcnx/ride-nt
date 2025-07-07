@@ -86,7 +86,7 @@ function restoreLayerSelection(map, baseLayers, overlays) {
 function setupEventListeners(map, baseLayers, overlays) {
   map.on("baselayerchange", (e) => {
     const selectedName = Object.entries(baseLayers).find(
-      ([_, v]) => v === e.layer,
+      ([_, v]) => v === e.layer
     )?.[0];
     if (selectedName) localStorage.setItem(STORAGE_KEY_BASE, selectedName);
   });

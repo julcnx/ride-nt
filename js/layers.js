@@ -1,3 +1,5 @@
+import { isDev } from "./dev.js";
+
 const GOOGLE_LAYERS = { satellite: "s", terrain: "p" };
 
 const googleSatellite = L.tileLayer(
@@ -6,7 +8,7 @@ const googleSatellite = L.tileLayer(
     subdomains: ["0", "1", "2", "3"],
     attribution: "&copy; Google Satellite",
     maxNativeZoom: 18,
-  },
+  }
 );
 
 const googleTerrain = L.tileLayer(
@@ -16,7 +18,7 @@ const googleTerrain = L.tileLayer(
     attribution: "&copy; Google Terrain",
     maxNativeZoom: 18,
     opacity: 0.5,
-  },
+  }
 );
 
 const esriFirefly = L.esri.basemapLayer("ImageryFirefly", {
@@ -31,7 +33,7 @@ const esriWayback = L.tileLayer(
   "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
   {
     maxNativeZoom: 17,
-  },
+  }
 );
 
 const osmStandard = L.tileLayer(
@@ -39,25 +41,28 @@ const osmStandard = L.tileLayer(
   {
     subdomains: ["a", "b", "c"],
     attribution: "&copy; OpenStreetMap contributors",
-  },
+  }
 );
 
 const worldTopoMap = L.tileLayer(
   "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
   {
     maxNativeZoom: 19,
-  },
+  }
 );
 
-const customTiles = L.tileLayer(`./tiles/{z}/{x}/{y}.png?ts=${__TILES_TIMESTAMP__}`, {
-  tileSize: 256,
-  opacity: 1,
-  minNativeZoom: 10,
-  maxNativeZoom: 13,
-  attribution: "Ride NT",
-  zIndex: 3,
-  className: 'overlay'
-});
+const customTiles = L.tileLayer(
+  `./tiles/{z}/{x}/{y}.png?ts=${__TILES_TIMESTAMP__}`,
+  {
+    tileSize: 256,
+    opacity: 1,
+    minNativeZoom: 10,
+    maxNativeZoom: 13,
+    attribution: "Ride NT",
+    zIndex: 3,
+    className: "overlay",
+  }
+);
 
 const googleStreetViewTiles = L.tileLayer(
   "https://mts{s}.googleapis.com/vt?hl=en-US&lyrs=svv|cb_client:apiv3&style=40,18&x={x}&y={y}&z={z}",
@@ -68,8 +73,8 @@ const googleStreetViewTiles = L.tileLayer(
     maxZoom: 20,
     opacity: 0.7,
     zIndex: 1,
-    className: 'overlay'
-  },
+    className: "overlay",
+  }
 );
 
 const mapillaryVector = L.vectorGrid.protobuf(
@@ -78,7 +83,7 @@ const mapillaryVector = L.vectorGrid.protobuf(
     transparent: true,
     maxNativeZoom: 13,
     zIndex: 1,
-    className: 'overlay',
+    className: "overlay",
     vectorTileLayerStyles: {
       sequence: () => ({
         color: "rgb(20, 150, 60)",
@@ -86,18 +91,31 @@ const mapillaryVector = L.vectorGrid.protobuf(
         opacity: 0.7,
       }),
     },
-  },
+  }
 );
 
-// const kartaViewTiles = L.tileLayer(
-//   "https://karta-gateway.geo.azure.myteksi.net/view/api/2.0/sequence/tiles/{x}/{y}/{z}.png",
-//   {
-//     transparent: true,
-//     minNativeZoom: 13,
-//     maxNativeZoom: 20,
-//     className: 'overlay',
-//   },
-// );
+const kartaViewTiles = L.tileLayer(
+  "https://karta-gateway.geo.azure.myteksi.net/view/api/2.0/sequence/tiles/{x}/{y}/{z}.png",
+  {
+    transparent: true,
+    minNativeZoom: 13,
+    maxNativeZoom: 20,
+    className: "overlay",
+  }
+);
+
+const stravaHeatmapTiles = L.tileLayer(
+  "https://content-{s}.strava.com/identified/globalheat/all/hot/{z}/{x}/{y}.png?v=19",
+  {
+    subdomains: ["a"],
+    attribution: '&copy; <a href="https://www.strava.com/">Strava</a>',
+    maxNativeZoom: 16,
+    maxZoom: 20,
+    opacity: 0.6,
+    zIndex: 2,
+    className: "overlay",
+  }
+);
 
 const osmGpsTraces = L.tileLayer(
   "https://{s}.gps-tile.openstreetmap.org/lines/{z}/{x}/{y}.png",
@@ -105,8 +123,8 @@ const osmGpsTraces = L.tileLayer(
     transparent: true,
     maxNativeZoom: 18,
     zIndex: 2,
-    className: 'overlay',
-  },
+    className: "overlay",
+  }
 );
 
 export const baseLayers = {
@@ -122,7 +140,14 @@ export const baseLayers = {
 export const overlays = {
   "Ride NT": customTiles,
   "OpenStreetMap traces": osmGpsTraces,
-  "Google Street View": googleStreetViewTiles,
-  Mapillary: mapillaryVector,
-  // KartaView: kartaViewTiles,
 };
+
+// Add additional layers for development mode
+// These layers are not included in production to keep the map clean and focused on essential data.
+// They are useful for testing and development purposes, providing additional context or data layers.
+if (isDev()) {
+  overlays["Google Street View"] = googleStreetViewTiles;
+  overlays.Mapillary = mapillaryVector;
+  overlays.KartaView = kartaViewTiles;
+  overlays["Strava Heatmap"] = stravaHeatmapTiles;
+}
