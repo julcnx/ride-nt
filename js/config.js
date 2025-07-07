@@ -1,10 +1,9 @@
 export const clipBounds = {
-  minLat: 16.5,   // Extended south to include Mae Sot
-  maxLat: 20.5,   // Up to Mae Sai
+  minLat: 16.0,   // Slightly extended south to cover below Khon Kaen
+  maxLat: 20.5,   // Still up to Mae Sai
   minLon: 97.5,   // Western edge (Mae Sot)
-  maxLon: 100.5   // Eastern edge
+  maxLon: 103.0   // Extended east to include Khon Kaen
 };
-
 
 export const regionBounds = [
   [clipBounds.minLat, clipBounds.minLon],

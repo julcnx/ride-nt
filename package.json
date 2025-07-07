@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "vite",
+    "start": "vite --open",
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "vite build && gh-pages -d dist",
