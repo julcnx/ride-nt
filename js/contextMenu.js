@@ -31,10 +31,10 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
 
     addMenuItem("Edit in OpenStreetMap", () => {
       window.open(
-        `https://www.openstreetmap.org/edit?editor=id&lat=${lat}&lon=${lng}&zoom=${Math.max(
+        `https://www.openstreetmap.org/id?#map=${Math.max(
           16,
           map.getZoom()
-        )}`
+        )}/${lat}/${lng}`
       );
     });
 
