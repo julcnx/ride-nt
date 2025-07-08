@@ -1,12 +1,11 @@
 import { isDev } from "./dev.js";
 
-const GOOGLE_LAYERS = { satellite: "s", terrain: "p" };
+const GOOGLE_LAYERS = { satellite: "s", terrain: "p", hybrid: "h" };
 
 const googleSatellite = L.tileLayer(
   `https://mt{s}.google.com/vt?lyrs=${GOOGLE_LAYERS.satellite}&x={x}&y={y}&z={z}`,
   {
     subdomains: ["0", "1", "2", "3"],
-    attribution: "&copy; Google Satellite",
     maxNativeZoom: 18,
   }
 );
@@ -15,9 +14,18 @@ const googleTerrain = L.tileLayer(
   `https://mt{s}.google.com/vt?lyrs=${GOOGLE_LAYERS.terrain}&x={x}&y={y}&z={z}`,
   {
     subdomains: ["0", "1", "2", "3"],
-    attribution: "&copy; Google Terrain",
     maxNativeZoom: 18,
     opacity: 0.5,
+  }
+);
+
+const googleHybrid = L.tileLayer(
+  `https://mt{s}.google.com/vt?lyrs=${GOOGLE_LAYERS.hybrid}&x={x}&y={y}&z={z}`,
+  {
+    subdomains: ["0", "1", "2", "3"],
+    maxNativeZoom: 18,
+    transparent: true,
+    zIndex: 2,
   }
 );
 
@@ -40,7 +48,6 @@ const osmStandard = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
     subdomains: ["a", "b", "c"],
-    attribution: "&copy; OpenStreetMap contributors",
   }
 );
 
@@ -58,7 +65,6 @@ const customTiles = L.tileLayer(
     opacity: 1,
     minNativeZoom: 10,
     maxNativeZoom: 13,
-    attribution: "Ride NT",
     zIndex: 3,
     className: "overlay",
   }
@@ -68,7 +74,6 @@ const googleStreetViewTiles = L.tileLayer(
   "https://mts{s}.googleapis.com/vt?hl=en-US&lyrs=svv|cb_client:apiv3&style=40,18&x={x}&y={y}&z={z}",
   {
     subdomains: ["0", "1", "2", "3"],
-    attribution: "&copy; Google Street View",
     maxNativeZoom: 13,
     maxZoom: 20,
     opacity: 0.7,
@@ -108,7 +113,6 @@ const stravaHeatmapTiles = L.tileLayer(
   "https://content-{s}.strava.com/identified/globalheat/all/hot/{z}/{x}/{y}.png?v=19",
   {
     subdomains: ["a"],
-    attribution: '&copy; <a href="https://www.strava.com/">Strava</a>',
     maxNativeZoom: 16,
     maxZoom: 20,
     opacity: 0.6,
@@ -147,6 +151,7 @@ export const overlays = {
 // They are useful for testing and development purposes, providing additional context or data layers.
 if (isDev()) {
   overlays["Google Street View"] = googleStreetViewTiles;
+  overlays["Google Hybrid"] = googleHybrid;
   overlays.Mapillary = mapillaryVector;
   overlays.KartaView = kartaViewTiles;
   overlays["Strava Heatmap"] = stravaHeatmapTiles;
