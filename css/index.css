@@ -65,3 +65,31 @@ body::-webkit-scrollbar-thumb {
 .leaflet-bar a {
   touch-action: manipulation; /* Enables faster tap handling */
 }
+
+.leaflet-top-center {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Above map elements */
+  pointer-events: auto;
+}
+
+.transparency-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.transparency-select {
+  height: 24px;
+  font-size: 13px;
+}
+
+.transparency-slider {
+  width: 100px;
+  height: 24px;
+}

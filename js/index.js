@@ -6,27 +6,35 @@ import { addContextMenu } from "./contextMenu.js";
 import { enableGpxDragAndDrop } from "./gpxDragDrop.js";
 import { addKeyboardShortcuts } from "./keyboard.js";
 import { addHighlightPen } from "./draw.js";
+import { addBaseLayerTransparencyControl } from "./transparency.js";
 
 if (isDev()) {
-  document.title = "🤖" + document.title;
+	document.title = "🤖" + document.title;
 }
 
-const { map, baseLayers, overlays, currentBaseLayer, overlaysControl } =
-  initializeMap();
+const {
+	map,
+	baseLayers,
+	satelliteLayers,
+	overlays,
+	currentBaseLayer,
+	layersControl,
+} = initializeMap();
 
 addLegend(map);
 addContextMenu(map, baseLayers, currentBaseLayer);
 addKeyboardShortcuts(
-  map,
-  overlays,
-  baseLayers["Google Satellite"],
-  currentBaseLayer
+	map,
+	overlays,
+	baseLayers["Google Satellite"],
+	currentBaseLayer,
 );
 addHighlightPen(map);
 
-enableGpxDragAndDrop(map, overlaysControl, overlays);
+enableGpxDragAndDrop(map, layersControl, overlays);
+addBaseLayerTransparencyControl(map, overlays, satelliteLayers);
 
 window.addEventListener("load", promptPassword);
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") promptPassword();
+	if (document.visibilityState === "visible") promptPassword();
 });

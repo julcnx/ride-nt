@@ -1,8 +1,10 @@
 import { regionBounds } from "./config.js";
-import { baseLayers, overlays } from "./layers.js";
+import { baseLayers, satelliteLayers, overlays } from "./layers.js";
+import { baseLayerTransparency } from "./transparency.js";
 
 const STORAGE_KEY_VIEW = "rident_map_view";
 const STORAGE_KEY_BASE = "rident_base_layer";
+const STORAGE_KEY_SATELLITE = "rident_satellite";
 const STORAGE_KEY_OVERLAYS = "rident_overlays";
 
 export function initializeMap() {
@@ -11,14 +13,26 @@ export function initializeMap() {
   const map = createMap();
   setInitialView(map);
 
-  const overlaysControl = L.control
+  const layersControl = L.control
     .layers(baseLayers, overlays, { collapsed: true, autoZIndex: false })
     .addTo(map);
 
-  const currentBaseLayer = restoreLayerSelection(map, baseLayers, overlays);
+  const currentBaseLayer = restoreLayerSelection(
+    map,
+    baseLayers,
+    overlays,
+    satelliteLayers,
+  );
   setupEventListeners(map, baseLayers, overlays);
 
-  return { map, baseLayers, overlays, currentBaseLayer, overlaysControl };
+  return {
+    map,
+    baseLayers,
+    satelliteLayers,
+    overlays,
+    currentBaseLayer,
+    layersControl,
+  };
 }
 
 function createMap() {
@@ -52,9 +66,10 @@ function setInitialView(map) {
   map.setView([18.79, 98.98], 10);
 }
 
-function restoreLayerSelection(map, baseLayers, overlays) {
+function restoreLayerSelection(map, baseLayers, overlays, satelliteLayers) {
   let currentBaseLayer;
 
+  // Restore or fallback base layer
   const baseName = localStorage.getItem(STORAGE_KEY_BASE);
   if (baseName && baseLayers[baseName]) {
     baseLayers[baseName].addTo(map);
@@ -64,15 +79,14 @@ function restoreLayerSelection(map, baseLayers, overlays) {
     currentBaseLayer = baseLayers["Google Terrain"];
   }
 
+  // Restore overlays
   const overlayJSON = localStorage.getItem(STORAGE_KEY_OVERLAYS);
   let savedOverlays = [];
   try {
     savedOverlays = overlayJSON ? JSON.parse(overlayJSON) : [];
   } catch {}
 
-  if (!savedOverlays.length) {
-    overlays["Ride NT"].addTo(map);
-  } else {
+  if (savedOverlays.length) {
     for (const [name, layer] of Object.entries(overlays)) {
       if (savedOverlays.includes(name)) {
         layer.addTo(map);
@@ -80,15 +94,41 @@ function restoreLayerSelection(map, baseLayers, overlays) {
     }
   }
 
+  // Restore or default satellite layer
+  const satName = localStorage.getItem(STORAGE_KEY_SATELLITE);
+  let currentSatelliteLayer;
+  if (satName && satelliteLayers[satName]) {
+    currentSatelliteLayer = satelliteLayers[satName];
+  } else {
+    currentSatelliteLayer = satelliteLayers["Google Satellite"];
+  }
+
+  if (currentSatelliteLayer) {
+    currentSatelliteLayer.setOpacity(baseLayerTransparency / 100.0);
+    currentSatelliteLayer.addTo(map);
+  }
+
   return currentBaseLayer;
 }
 
 function setupEventListeners(map, baseLayers, overlays) {
   map.on("baselayerchange", (e) => {
-    const selectedName = Object.entries(baseLayers).find(
-      ([_, v]) => v === e.layer
-    )?.[0];
-    if (selectedName) localStorage.setItem(STORAGE_KEY_BASE, selectedName);
+    const selectedBaseLayer = Object.entries(baseLayers).find(
+      ([_, v]) => v === e.layer,
+    );
+    if (selectedBaseLayer) {
+      localStorage.setItem(STORAGE_KEY_BASE, selectedBaseLayer[0]);
+      selectedBaseLayer[1].setZIndex(0);
+    }
+
+    const selectedSatLayer = Object.entries(satelliteLayers).find(
+      ([_, v]) => v === e.layer,
+    );
+    if (selectedSatLayer) {
+      localStorage.setItem(STORAGE_KEY_SATELLITE, selectedSatLayer[0]);
+      selectedSatLayer[1].setZIndex(1);
+      selectedSatLayer[1].setOpacity(baseLayerTransparency / 100);
+    }
   });
 
   map.on("overlayadd overlayremove", () => {

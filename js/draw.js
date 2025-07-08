@@ -1,5 +1,6 @@
+export const drawnLines = [];
+
 export function addHighlightPen(map) {
-  const drawnLines = [];
   let currentLine = null;
   let drawing = false;
 
