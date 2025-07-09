@@ -7,7 +7,7 @@ const googleSatellite = L.tileLayer(
   {
     subdomains: ["0", "1", "2", "3"],
     maxNativeZoom: 18,
-  },
+  }
 );
 
 const googleTerrain = L.tileLayer(
@@ -16,7 +16,7 @@ const googleTerrain = L.tileLayer(
     subdomains: ["0", "1", "2", "3"],
     maxNativeZoom: 18,
     // opacity: 0.5,
-  },
+  }
 );
 
 const googleHybrid = L.tileLayer(
@@ -26,7 +26,7 @@ const googleHybrid = L.tileLayer(
     maxNativeZoom: 18,
     transparent: true,
     zIndex: 2,
-  },
+  }
 );
 
 const esriFirefly = L.esri.basemapLayer("ImageryFirefly", {
@@ -41,26 +41,25 @@ const esriWayback = L.tileLayer(
   "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
   {
     maxNativeZoom: 17,
-  },
+  }
 );
 
 const osmStandard = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
     subdomains: ["a", "b", "c"],
-  },
+  }
 );
 
 const worldTopoMap = L.tileLayer(
   "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
   {
     maxNativeZoom: 19,
-  },
+  }
 );
 
 const customTiles = L.tileLayer(
-  (isDev() ? "http://julcnx.github.io/ride-nt" : ".") +
-    `/tiles/{z}/{x}/{y}.png?ts=${__TILES_TIMESTAMP__}`,
+  `./tiles/{z}/{x}/{y}.png?ts=${__TILES_TIMESTAMP__}`,
   {
     tileSize: 256,
     // opacity: 1,
@@ -68,7 +67,7 @@ const customTiles = L.tileLayer(
     maxNativeZoom: 13,
     zIndex: 3,
     className: "overlay",
-  },
+  }
 );
 
 const googleStreetViewTiles = L.tileLayer(
@@ -80,7 +79,7 @@ const googleStreetViewTiles = L.tileLayer(
     // opacity: 0.7,
     zIndex: 1,
     className: "overlay",
-  },
+  }
 );
 
 const mapillaryVector = L.vectorGrid.protobuf(
@@ -97,7 +96,7 @@ const mapillaryVector = L.vectorGrid.protobuf(
         // opacity: 0.7,
       }),
     },
-  },
+  }
 );
 
 const kartaViewTiles = L.tileLayer(
@@ -107,7 +106,7 @@ const kartaViewTiles = L.tileLayer(
     minNativeZoom: 13,
     maxNativeZoom: 20,
     className: "overlay",
-  },
+  }
 );
 
 const stravaHeatmapTiles = L.tileLayer(
@@ -119,7 +118,7 @@ const stravaHeatmapTiles = L.tileLayer(
     // opacity: 0.6,
     zIndex: 2,
     className: "overlay",
-  },
+  }
 );
 
 const osmGpsTraces = L.tileLayer(
@@ -129,17 +128,13 @@ const osmGpsTraces = L.tileLayer(
     maxNativeZoom: 18,
     zIndex: 2,
     className: "overlay",
-  },
+  }
 );
 
 export const baseLayers = {
-  "Google Terrain": googleTerrain,
-  "OSM Standard": osmStandard,
   "World Topo Map": worldTopoMap,
-  // "Google Satellite": googleSatellite,
-  // "ESRI Firefly": esriFirefly,
-  // "ESRI Clarity": esriClarity,
-  // "ESRI Wayback": esriWayback,
+  "OSM Standard": osmStandard,
+  "Google Terrain": googleTerrain,
 };
 
 export const satelliteLayers = {
@@ -162,5 +157,5 @@ if (isDev()) {
   overlays["Google Hybrid"] = googleHybrid;
   overlays.Mapillary = mapillaryVector;
   overlays.KartaView = kartaViewTiles;
-  overlays["Strava Heatmap"] = stravaHeatmapTiles;
+  // overlays["Strava Heatmap"] = stravaHeatmapTiles;
 }

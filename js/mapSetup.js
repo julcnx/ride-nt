@@ -21,7 +21,7 @@ export function initializeMap() {
     map,
     baseLayers,
     overlays,
-    satelliteLayers,
+    satelliteLayers
   );
   setupEventListeners(map, baseLayers, overlays);
 
@@ -75,8 +75,8 @@ function restoreLayerSelection(map, baseLayers, overlays, satelliteLayers) {
     baseLayers[baseName].addTo(map);
     currentBaseLayer = baseLayers[baseName];
   } else {
-    baseLayers["Google Terrain"].addTo(map);
-    currentBaseLayer = baseLayers["Google Terrain"];
+    baseLayers["World Topo Map"].addTo(map);
+    currentBaseLayer = baseLayers["World Topo Map"];
   }
 
   // Restore overlays
@@ -114,7 +114,7 @@ function restoreLayerSelection(map, baseLayers, overlays, satelliteLayers) {
 function setupEventListeners(map, baseLayers, overlays) {
   map.on("baselayerchange", (e) => {
     const selectedBaseLayer = Object.entries(baseLayers).find(
-      ([_, v]) => v === e.layer,
+      ([_, v]) => v === e.layer
     );
     if (selectedBaseLayer) {
       localStorage.setItem(STORAGE_KEY_BASE, selectedBaseLayer[0]);
@@ -122,7 +122,7 @@ function setupEventListeners(map, baseLayers, overlays) {
     }
 
     const selectedSatLayer = Object.entries(satelliteLayers).find(
-      ([_, v]) => v === e.layer,
+      ([_, v]) => v === e.layer
     );
     if (selectedSatLayer) {
       localStorage.setItem(STORAGE_KEY_SATELLITE, selectedSatLayer[0]);
