@@ -1,5 +1,10 @@
 import { regionBounds } from "./config.js";
-import { baseLayers, satelliteLayers, overlays } from "./layers.js";
+import {
+  mainOverlay,
+  baseLayers,
+  satelliteLayers,
+  overlays,
+} from "./layers.js";
 import { baseLayerTransparency } from "./transparency.js";
 
 const STORAGE_KEY_VIEW = "rident_map_view";
@@ -21,12 +26,13 @@ export function initializeMap() {
     map,
     baseLayers,
     overlays,
-    satelliteLayers
+    satelliteLayers,
   );
   setupEventListeners(map, baseLayers, overlays);
 
   return {
     map,
+    mainOverlay,
     baseLayers,
     satelliteLayers,
     overlays,
@@ -39,6 +45,7 @@ function createMap() {
   const map = L.map("map", {
     minZoom: 9,
     maxBounds: L.latLngBounds(regionBounds),
+    layers: [mainOverlay],
   });
   map.attributionControl.setPrefix("");
   return map;
@@ -114,7 +121,7 @@ function restoreLayerSelection(map, baseLayers, overlays, satelliteLayers) {
 function setupEventListeners(map, baseLayers, overlays) {
   map.on("baselayerchange", (e) => {
     const selectedBaseLayer = Object.entries(baseLayers).find(
-      ([_, v]) => v === e.layer
+      ([_, v]) => v === e.layer,
     );
     if (selectedBaseLayer) {
       localStorage.setItem(STORAGE_KEY_BASE, selectedBaseLayer[0]);
@@ -122,7 +129,7 @@ function setupEventListeners(map, baseLayers, overlays) {
     }
 
     const selectedSatLayer = Object.entries(satelliteLayers).find(
-      ([_, v]) => v === e.layer
+      ([_, v]) => v === e.layer,
     );
     if (selectedSatLayer) {
       localStorage.setItem(STORAGE_KEY_SATELLITE, selectedSatLayer[0]);

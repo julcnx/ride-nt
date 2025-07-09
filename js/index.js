@@ -14,6 +14,7 @@ if (isDev()) {
 
 const {
 	map,
+	mainOverlay,
 	baseLayers,
 	satelliteLayers,
 	overlays,
@@ -32,7 +33,7 @@ addKeyboardShortcuts(
 addHighlightPen(map);
 
 enableGpxDragAndDrop(map, layersControl, overlays);
-addBaseLayerTransparencyControl(map, overlays, satelliteLayers);
+addBaseLayerTransparencyControl(map, mainOverlay, overlays, satelliteLayers);
 
 window.addEventListener("load", promptPassword);
 document.addEventListener("visibilitychange", () => {

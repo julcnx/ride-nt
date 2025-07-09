@@ -2,6 +2,7 @@ export let baseLayerTransparency = 0;
 
 export function addBaseLayerTransparencyControl(
   map,
+  mainOverlay,
   overlays,
   satelliteLayers,
 ) {
@@ -57,6 +58,8 @@ export function addBaseLayerTransparencyControl(
       //   ".leaflet-pane.leaflet-overlay-pane",
       // );
       // overlayPane.style.opacity = effectiveOpacity;
+
+      mainOverlay.setOpacity(effectiveOpacity);
 
       // Update all overlays
       Object.values(overlays).forEach((layer) => {
