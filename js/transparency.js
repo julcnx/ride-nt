@@ -6,7 +6,7 @@ export function addBaseLayerTransparencyControl(
   overlays,
   satelliteLayers
 ) {
-  const baseControl = L.control({ position: "topright" }); // Or 'topleft' if needed
+  const baseControl = L.control({ position: "topleft" }); // Or 'topleft' if needed
 
   baseControl.onAdd = function () {
     const div = L.DomUtil.create(

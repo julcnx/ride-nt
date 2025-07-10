@@ -78,7 +78,7 @@ const worldTopoMap = L.tileLayer(
   }
 );
 
-const rtsMap = L.tileLayer(`./50k/{z}/{y}/{x}.png`, {
+const rtsMap = L.tileLayer(`./50k/{z}/{x}/{y}.png`, {
   attribution: `50K`,
   minNativeZoom: 13,
   maxNativeZoom: 14,

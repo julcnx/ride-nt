@@ -1,5 +1,6 @@
 /public/tiles/
 /public/50k/
+.sqlitedb
 
 # Node modules
 /node_modules/

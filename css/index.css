@@ -66,13 +66,15 @@ body::-webkit-scrollbar-thumb {
   touch-action: manipulation; /* Enables faster tap handling */
 }
 
-.leaflet-top-center {
+/* .leaflet-control-layers {
   position: fixed;
-  left: 50%;
+  right: 0;
   transform: translateX(-50%);
-  z-index: 1000; /* Above map elements */
   pointer-events: auto;
 }
+.leaflet-control-layers.leaflet-top-center {
+  transform: translateX(-100px);
+} */
 
 .transparency-toolbar {
   display: flex;
@@ -92,4 +94,15 @@ body::-webkit-scrollbar-thumb {
 .transparency-slider {
   width: 100px;
   height: 24px;
+}
+
+.leaflet-control-zoom {
+  font-size: 1.5rem; /* Increase font size */
+}
+
+.leaflet-control-zoom a {
+  width: 40px; /* Default is ~26px */
+  height: 40px;
+  line-height: 40px; /* Center the "+" and "-" */
+  font-size: 1.5rem; /* Make symbols larger */
 }

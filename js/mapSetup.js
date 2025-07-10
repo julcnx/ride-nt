@@ -19,14 +19,18 @@ export function initializeMap() {
   setInitialView(map);
 
   const layersControl = L.control
-    .layers(baseLayers, overlays, { collapsed: true, autoZIndex: false })
+    .layers(baseLayers, overlays, {
+      collapsed: true,
+      autoZIndex: false,
+      position: "topright",
+    })
     .addTo(map);
 
   const currentBaseLayer = restoreLayerSelection(
     map,
     baseLayers,
     overlays,
-    satelliteLayers,
+    satelliteLayers
   );
   setupEventListeners(map, baseLayers, overlays);
 
@@ -46,8 +50,10 @@ function createMap() {
     minZoom: 9,
     maxBounds: L.latLngBounds(regionBounds),
     layers: [mainOverlay],
+    zoomControl: false,
   });
   map.attributionControl.setPrefix("");
+
   return map;
 }
 
@@ -121,7 +127,7 @@ function restoreLayerSelection(map, baseLayers, overlays, satelliteLayers) {
 function setupEventListeners(map, baseLayers, overlays) {
   map.on("baselayerchange", (e) => {
     const selectedBaseLayer = Object.entries(baseLayers).find(
-      ([_, v]) => v === e.layer,
+      ([_, v]) => v === e.layer
     );
     if (selectedBaseLayer) {
       localStorage.setItem(STORAGE_KEY_BASE, selectedBaseLayer[0]);
@@ -129,7 +135,7 @@ function setupEventListeners(map, baseLayers, overlays) {
     }
 
     const selectedSatLayer = Object.entries(satelliteLayers).find(
-      ([_, v]) => v === e.layer,
+      ([_, v]) => v === e.layer
     );
     if (selectedSatLayer) {
       localStorage.setItem(STORAGE_KEY_SATELLITE, selectedSatLayer[0]);

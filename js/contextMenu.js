@@ -75,6 +75,19 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
       });
     });
 
+    addMenuItem("Copy Bounding Box", () => {
+      const bounds = map.getBounds();
+      const minLon = bounds.getSouth().toFixed(6);
+      const minLat = bounds.getEast().toFixed(6);
+      const maxLon = bounds.getNorth().toFixed(6);
+      const maxLat = bounds.getWest().toFixed(6);
+      const bboxString = `${maxLon},${maxLat},${minLon},${minLat}`;
+
+      navigator.clipboard.writeText(bboxString).then(() => {
+        alert("Bounding box copied to clipboard.");
+      });
+    });
+
     // Position and show menu
     contextMenu.style.left = e.originalEvent.pageX + "px";
     contextMenu.style.top = e.originalEvent.pageY + "px";

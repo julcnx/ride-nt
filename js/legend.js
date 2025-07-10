@@ -1,7 +1,7 @@
 import { colors } from "./config.js";
 
 export function addLegend(map) {
-  const legend = L.control({ position: "bottomright" });
+  const legend = L.control({ position: "bottomleft" });
 
   legend.onAdd = function () {
     const container = L.DomUtil.create("div", "info legend");
