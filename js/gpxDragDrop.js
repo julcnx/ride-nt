@@ -21,9 +21,9 @@ export function enableGpxDragAndDrop(map, layersControl, overlays = {}) {
         const gpxLayer = new L.GPX(gpxText, {
           async: true,
           polyline_options: {
-            color: "yellow",
-            weight: 20,
-            opacity: 0.3,
+            color: "#9400D3",
+            weight: 5,
+            opacity: 0.7,
           },
           gpx_options: {
             joinTrackSegments: false,
@@ -47,7 +47,7 @@ export function enableGpxDragAndDrop(map, layersControl, overlays = {}) {
             map.fitBounds(gpxBounds);
           } else {
             alert(
-              `GPX file "${file.name}" is outside the allowed bounds and will not be displayed.`,
+              `GPX file "${file.name}" is outside the allowed bounds and will not be displayed.`
             );
           }
         });

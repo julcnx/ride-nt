@@ -78,6 +78,12 @@ const worldTopoMap = L.tileLayer(
   }
 );
 
+const rtsMap = L.tileLayer(`./50k/{z}/{y}/{x}.png`, {
+  attribution: `50K`,
+  minNativeZoom: 13,
+  maxNativeZoom: 14,
+});
+
 const googleStreetViewTiles = L.tileLayer(
   "https://mts{s}.googleapis.com/vt?hl=en-US&lyrs=svv|cb_client:apiv3&style=40,18&x={x}&y={y}&z={z}",
   {
@@ -145,6 +151,10 @@ export const baseLayers = {
   "Google Maps": googleMaps,
   "Google Terrain": googleTerrain,
 };
+
+if (isDev()) {
+  baseLayers["RTS Map"] = rtsMap;
+}
 
 export const satelliteLayers = {
   "Google Satellite": googleSatellite,

@@ -4,14 +4,14 @@ export function addBaseLayerTransparencyControl(
   map,
   mainOverlay,
   overlays,
-  satelliteLayers,
+  satelliteLayers
 ) {
   const baseControl = L.control({ position: "topright" }); // Or 'topleft' if needed
 
   baseControl.onAdd = function () {
     const div = L.DomUtil.create(
       "div",
-      "leaflet-control leaflet-top-center leaflet-control-layers leaflet-control-layers-expanded transparency-toolbar",
+      "leaflet-control leaflet-top-center leaflet-control-layers leaflet-control-layers-expanded transparency-toolbar"
     );
 
     // --- Dropdown ---
@@ -55,22 +55,24 @@ export function addBaseLayerTransparencyControl(
       const effectiveOpacity = (100 - value) / 100;
 
       // const overlayPane = document.querySelector(
-      //   ".leaflet-pane.leaflet-overlay-pane",
+      //   ".leaflet-pane.leaflet-overlay-pane"
       // );
       // overlayPane.style.opacity = effectiveOpacity;
 
-      mainOverlay.setOpacity(effectiveOpacity);
+      // mainOverlay.setOpacity(effectiveOpacity);
 
       // Update all overlays
-      Object.values(overlays).forEach((layer) => {
-        if (typeof layer.setOpacity === "function") {
-          layer.setOpacity(effectiveOpacity);
-        }
-      });
+      // Object.values(overlays).forEach((layer) => {
+      //   if (typeof layer.setOpacity === "function") {
+      //     layer.setOpacity(effectiveOpacity);
+      //   }
+      // });
 
       if (currentSatelliteLayer) {
         currentSatelliteLayer.setOpacity(baseLayerTransparency / 100);
       }
+
+      input.blur(); // Remove focus to prevent slider from sticking
     });
 
     L.DomEvent.on(select, "change", (e) => {
@@ -86,6 +88,8 @@ export function addBaseLayerTransparencyControl(
     });
 
     L.DomEvent.disableClickPropagation(div);
+
+    select.blur();
     return div;
   };
 

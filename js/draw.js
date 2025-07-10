@@ -9,7 +9,7 @@ export function addHighlightPen(map) {
     const baseWeight = 25;
     const scaledWeight = Math.max(4, baseWeight - (18 - zoom) * 2);
     return {
-      color: "#9400D3",
+      color: "yellow",
       weight: scaledWeight,
       opacity: 0.3,
     };
@@ -84,7 +84,7 @@ export function addHighlightPen(map) {
     if (e.latlng) return e.latlng;
     if (e.touches && e.touches.length > 0) {
       return map.containerPointToLatLng(
-        map.mouseEventToContainerPoint(e.touches[0]),
+        map.mouseEventToContainerPoint(e.touches[0])
       );
     }
     return null;
@@ -158,7 +158,7 @@ export function addHighlightPen(map) {
 
   function updateDrawButton() {
     const drawBtn = document.querySelector(
-      '.leaflet-bar a[title="Toggle highlighter"]',
+      '.leaflet-bar a[title="Toggle highlighter"]'
     );
     if (!drawBtn) return;
     if (drawing) {
@@ -178,7 +178,7 @@ export function addHighlightPen(map) {
 
     const encoded = drawnLines
       .map((line) =>
-        polyline.encode(line.getLatLngs().map((p) => [p.lat, p.lng])),
+        polyline.encode(line.getLatLngs().map((p) => [p.lat, p.lng]))
       )
       .join(";");
 

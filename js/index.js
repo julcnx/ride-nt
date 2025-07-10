@@ -9,26 +9,27 @@ import { addHighlightPen } from "./draw.js";
 import { addBaseLayerTransparencyControl } from "./transparency.js";
 
 if (isDev()) {
-	document.title = "🤖" + document.title;
+  document.title = "🤖" + document.title;
 }
 
 const {
-	map,
-	mainOverlay,
-	baseLayers,
-	satelliteLayers,
-	overlays,
-	currentBaseLayer,
-	layersControl,
+  map,
+  mainOverlay,
+  baseLayers,
+  satelliteLayers,
+  overlays,
+  currentBaseLayer,
+  layersControl,
 } = initializeMap();
 
 addLegend(map);
 addContextMenu(map, baseLayers, currentBaseLayer);
 addKeyboardShortcuts(
-	map,
-	overlays,
-	baseLayers["Google Satellite"],
-	currentBaseLayer,
+  map,
+  mainOverlay,
+  overlays,
+  baseLayers["Google Satellite"],
+  currentBaseLayer
 );
 addHighlightPen(map);
 
@@ -37,5 +38,5 @@ addBaseLayerTransparencyControl(map, mainOverlay, overlays, satelliteLayers);
 
 window.addEventListener("load", promptPassword);
 document.addEventListener("visibilitychange", () => {
-	if (document.visibilityState === "visible") promptPassword();
+  if (document.visibilityState === "visible") promptPassword();
 });
