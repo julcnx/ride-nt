@@ -17,6 +17,17 @@ export function addKeyboardShortcuts(
     }
   }
 
+  function toggleSatellite() {
+    const slider = document.querySelector(".transparency-slider");
+    if (!slider) return;
+
+    const current = parseInt(slider.value, 10);
+    slider.value = current === 100 ? "0" : "100";
+
+    // Trigger the input event so it behaves reactively
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
   document.addEventListener("keydown", (e) => {
     const active = document.activeElement;
     if (
@@ -29,9 +40,10 @@ export function addKeyboardShortcuts(
 
     if (e.key.toLowerCase() === "a") {
       toggleOverlays(true);
-    }
-    if (e.key.toLowerCase() === "q") {
+    } else if (e.key.toLowerCase() === "q") {
       toggleOverlays(false);
+    } else if (e.key.toLowerCase() === "s") {
+      toggleSatellite();
     } else if (e.key === "Delete") {
       localStorage.clear();
       location.reload();

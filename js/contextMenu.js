@@ -1,5 +1,36 @@
 import { isDev } from "./dev.js";
 
+function showToast(message, duration = 2000) {
+  const toast = document.createElement("div");
+  toast.innerText = message;
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.left = "50%";
+  toast.style.transform = "translateX(-50%)";
+  toast.style.background = "rgba(0,0,0,0.8)";
+  toast.style.color = "#fff";
+  toast.style.padding = "8px 12px";
+  toast.style.borderRadius = "6px";
+  toast.style.fontSize = "14px";
+  toast.style.zIndex = 9999;
+  toast.style.opacity = 0;
+  toast.style.transition = "opacity 0.3s ease";
+
+  document.body.appendChild(toast);
+
+  // fade in
+  requestAnimationFrame(() => {
+    toast.style.opacity = 1;
+  });
+
+  setTimeout(() => {
+    toast.style.opacity = 0;
+    setTimeout(() => {
+      document.body.removeChild(toast);
+    }, 300);
+  }, duration);
+}
+
 export function addContextMenu(map, baseLayers, currentBaseLayer) {
   const contextMenu = document.getElementById("context-menu");
 
@@ -71,7 +102,7 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
 
     addMenuItem("Copy Coordinates", () => {
       navigator.clipboard.writeText(`${lat}, ${lng}`).then(() => {
-        alert("Coordinates copied to clipboard.");
+        showToast("Coordinates copied to clipboard.");
       });
     });
 
@@ -84,7 +115,7 @@ export function addContextMenu(map, baseLayers, currentBaseLayer) {
       const bboxString = `${maxLon},${maxLat},${minLon},${minLat}`;
 
       navigator.clipboard.writeText(bboxString).then(() => {
-        alert("Bounding box copied to clipboard.");
+        showToast("Bounding box copied to clipboard.");
       });
     });
 

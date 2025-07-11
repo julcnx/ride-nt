@@ -51,8 +51,10 @@ function createMap() {
     maxBounds: L.latLngBounds(regionBounds),
     layers: [mainOverlay],
     zoomControl: false,
+    maxZoom: 18,
+    attributionControl: false,
   });
-  map.attributionControl.setPrefix("");
+  // map.attributionControl.setPrefix("");
 
   return map;
 }

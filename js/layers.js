@@ -50,7 +50,7 @@ const googleHybrid = L.tileLayer(
 );
 
 const esriFirefly = L.esri.basemapLayer("ImageryFirefly", {
-  maxNativeZoom: 19,
+  maxNativeZoom: 18,
 });
 
 const esriClarity = L.esri.basemapLayer("ImageryClarity", {
@@ -74,7 +74,7 @@ const osmStandard = L.tileLayer(
 const worldTopoMap = L.tileLayer(
   "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
   {
-    maxNativeZoom: 19,
+    maxNativeZoom: 18,
   }
 );
 
