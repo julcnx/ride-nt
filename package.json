@@ -6,7 +6,7 @@
     "start": "vite --open",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && gh-pages -d dist",
+    "deploy": "vite build && rm -rf dist/50k && gh-pages -d dist",
     "tiles": "cd ../gpx-to-tiles/ && npm start"
   },
   "dependencies": {},

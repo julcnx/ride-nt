@@ -50,7 +50,7 @@ function createMap() {
     minZoom: 9,
     maxBounds: L.latLngBounds(regionBounds),
     layers: [mainOverlay],
-    zoomControl: false,
+    zoomControl: true,
     maxZoom: 18,
     attributionControl: false,
   });

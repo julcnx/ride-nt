@@ -66,15 +66,12 @@ body::-webkit-scrollbar-thumb {
   touch-action: manipulation; /* Enables faster tap handling */
 }
 
-/* .leaflet-control-layers {
+.leaflet-top-center {
   position: fixed;
-  right: 0;
-  transform: translateX(-50%);
+  right: 50%;
+  transform: translateX(50%);
   pointer-events: auto;
 }
-.leaflet-control-layers.leaflet-top-center {
-  transform: translateX(-100px);
-} */
 
 .transparency-toolbar {
   display: flex;

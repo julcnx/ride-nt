@@ -23,11 +23,6 @@ const {
 } = initializeMap();
 
 addLegend(map);
-L.control
-  .zoom({
-    position: "bottomleft",
-  })
-  .addTo(map);
 
 addContextMenu(map, baseLayers, currentBaseLayer);
 addKeyboardShortcuts(
