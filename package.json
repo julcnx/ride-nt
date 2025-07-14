@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "vite --open",
-    "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "vite build && rm -rf dist/50k && gh-pages -d dist",
-    "tiles": "cd ../gpx-to-tiles/ && npm start"
+    "start": "vite build --watch --mode development",
+    "preview": "vite build && vite preview",
+    "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {},
   "devDependencies": {

@@ -8,36 +8,45 @@ import { addKeyboardShortcuts } from "./keyboard.js";
 import { addHighlightPen } from "./draw.js";
 import { addBaseLayerTransparencyControl } from "./transparency.js";
 
-if (isDev()) {
-  document.title = "🤖" + document.title;
-}
+import "../css/index.css";
 
-const {
-  map,
-  mainOverlay,
-  baseLayers,
-  satelliteLayers,
-  overlays,
-  currentBaseLayer,
-  layersControl,
-} = initializeMap();
+document.addEventListener("DOMContentLoaded", () => {
+	if (isDev()) {
+		document.title = "🤖" + document.title;
+	}
 
-addLegend(map);
+	const {
+		map,
+		mainOverlay,
+		baseLayers,
+		satelliteLayers,
+		overlays,
+		currentBaseLayer,
+		layersControl,
+	} = initializeMap();
 
-addContextMenu(map, baseLayers, currentBaseLayer);
-addKeyboardShortcuts(
-  map,
-  mainOverlay,
-  overlays,
-  baseLayers["Google Satellite"],
-  currentBaseLayer
-);
-addHighlightPen(map);
+	addLegend(map);
 
-enableGpxDragAndDrop(map, layersControl, overlays);
-addBaseLayerTransparencyControl(map, mainOverlay, overlays, satelliteLayers);
+	addContextMenu(map, baseLayers, currentBaseLayer);
+	addKeyboardShortcuts(
+		map,
+		mainOverlay,
+		overlays,
+		baseLayers["Google Satellite"],
+		currentBaseLayer,
+	);
+	addHighlightPen(map);
 
-window.addEventListener("load", promptPassword);
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") promptPassword();
+	enableGpxDragAndDrop(map, layersControl, overlays);
+	addBaseLayerTransparencyControl(
+		map,
+		mainOverlay,
+		overlays,
+		satelliteLayers,
+	);
+
+	window.addEventListener("load", promptPassword);
+	document.addEventListener("visibilitychange", () => {
+		if (document.visibilityState === "visible") promptPassword();
+	});
 });

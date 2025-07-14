@@ -22,6 +22,8 @@ export const colors = {
   "residential": "rgba(160, 140, 120, 0.5)"
 };
 
+export const timestamp = 1752506058100;
+
 export const minZoom = 10;
 export const maxZoom = 13;
   
